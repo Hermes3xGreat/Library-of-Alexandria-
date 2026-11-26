@@ -1,0 +1,57 @@
+{
+ "id": "africa",
+ "name": "Africa Scroll",
+ "version": "0.6",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.africascroll.app",
+  "label": "Africa Scroll",
+  "versionCode": 6,
+  "versionName": "0.6",
+  "alias": "africascroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of Africa",
+  "description": "Africa Scroll: a free offline library of Africa — folk tales of West, East and Southern Africa, Augustine and Apuleius, Equiano and Sancho, Plaatje, travellers' journals and histories.",
+  "description_2": "Africa Scroll: a free offline library of Africa — folk tales of West, East and Southern Africa, Augustine and Apuleius, Equiano and Sancho, Plaatje, travellers' journals and histories.",
+  "description_3": "Africa Scroll: a free offline library of Africa — folk tales of West, East and Southern Africa, Augustine and Apuleius, Equiano and Sancho, Plaatje, travellers' journals and histories.\"><meta name=\"theme-color\" content=\"#2b2622",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "AFRICA",
+  "export_site": "{{name}}",
+  "id": "africa",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "African continent",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of Africa",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Anansi, Augustine, Equiano, a word, a phrase…",
+  "intro_chime": "[0,.3,.45,.75,1.05,1.2].forEach(function(t,e){l(e%3===0?82.41:123.47,{type:\"sine\",dur:.1,gain:e%3===0?.2:.1,attack:.002,release:.3,cutoff:500,rev:.35,when:t})}),[[392,.15],[493.88,.45],[587.33,.6],[659.25,.9],[587.33,1.2],[783.99,1.5],[659.25,1.8],[587.33,2.1]].forEach(function(n){l(n[0],{type:\"triangle\",dur:.12,gain:.16,attack:.002,release:1.1,cutoff:3600,rev:.6,when:n[1]}),l(n[0]*2.01,{type:\"sine\",dur:.06,gain:.05,attack:.002,release:.5,cutoff:5000,rev:.6,when:n[1]})}),l(98,{type:\"triangle\",dur:3,gain:.1,attack:1,release:2.2,cutoff:600,rev:.7,when:.2}),w(783.99,{gain:.1,dur:2,rev:.85,when:2.2})"
+ },
+ "color": "#2b2622",
+ "icon_color": "#2b2622",
+ "glyph": "✺",
+ "initials": "AF",
+ "mark_width": 1.1
+}
