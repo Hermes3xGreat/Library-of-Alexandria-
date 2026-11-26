@@ -1,0 +1,57 @@
+{
+ "id": "northern",
+ "name": "Northern Scroll",
+ "version": "1.1",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.northernscroll.app",
+  "label": "Northern Scroll",
+  "versionCode": 11,
+  "versionName": "1.1",
+  "alias": "northernscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of the North and the Middle Ages",
+  "description": "the North and the Middle Ages: the Eddas and the sagas, Beowulf, the Kalevala and the Nibelungenlied, the Mabinogion and the Irish gods, Roland, Gawain and Arthur, Boethius and Dante.",
+  "description_2": "the North and the Middle Ages: the Eddas and the sagas, Beowulf, the Kalevala and the Nibelungenlied, the Mabinogion and the Irish gods, Roland, Gawain and Arthur, Boethius and Dante.",
+  "description_3": "the North and the Middle Ages: the Eddas and the sagas, Beowulf, the Kalevala and the Nibelungenlied, the Mabinogion and the Irish gods, Roland, Gawain and Arthur, Boethius and Dante.\"><meta name=\"theme-color\" content=\"#2d5a35",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "NORTHERN",
+  "export_site": "{{name}}",
+  "id": "northern",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "North",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of the North",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Odin, Beowulf, Arthur",
+  "intro_chime": "[[146.83,0],[220,.9]].forEach(function(p){l(p[0],{type:\"sawtooth\",dur:1.1,gain:.13,attack:.35,release:1.6,cutoff:900,detune:-5,rev:.75,when:p[1]}),l(p[0],{type:\"sawtooth\",dur:1.1,gain:.11,attack:.4,release:1.6,cutoff:900,detune:6,rev:.75,when:p[1]})}),l(73.42,{type:\"triangle\",dur:3.6,gain:.15,attack:1.4,release:2.6,cutoff:600,rev:.7}),[293.66,349.23,392,440,523.25,587.33].forEach(function(t,e){l(t,{type:\"triangle\",dur:.4,gain:.2,attack:.004,release:1.5,cutoff:2800,rev:.7,when:1.9+e*.15})}),w(293.66,{gain:.17,dur:3,rev:.85,when:2.8})"
+ },
+ "color": "#2d5a35",
+ "icon_color": "#2d5a35",
+ "glyph": "ᛞ",
+ "initials": "NS",
+ "mark_width": 1.1
+}

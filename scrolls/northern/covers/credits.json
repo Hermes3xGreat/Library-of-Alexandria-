@@ -1,0 +1,122 @@
+{
+ "authors/The Elder Edda": {
+  "title": "Gold Bracteate",
+  "date": "400–600",
+  "credit": "The Metropolitan Museum of Art, 2001.583 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/2001.583.jpg"
+ },
+ "authors/The Beowulf Poet": {
+  "title": "Viking Sword",
+  "date": "10th century",
+  "credit": "The Metropolitan Museum of Art, 55.46.1 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/aa/web-large/DT758.jpg"
+ },
+ "authors/Sir Thomas Malory": {
+  "title": "King Arthur (from the Heroes Tapestries)",
+  "date": "ca. 1400–1410",
+  "credit": "The Metropolitan Museum of Art, 32.130.3a; 47.101.4 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/cl/web-large/KingArthur-after-treatment.jpg"
+ },
+ "authors/Chrétien de Troyes": {
+  "title": "Roundel with King Arthur Riding on a Camel (from a Series of the Nine Heroes)",
+  "date": "1500–1510",
+  "credit": "The Metropolitan Museum of Art, 32.24.58 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/cl/web-large/DT207364.jpg"
+ },
+ "authors/The Nibelungenlied Poet": {
+  "title": "Saint George and the Dragon",
+  "date": "ca. 1475",
+  "credit": "The Metropolitan Museum of Art, 1979.379 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/sf1979-379s1.jpg"
+ },
+ "authors/The Gawain Poet": {
+  "title": "Knight, Death, and the Devil",
+  "date": "1513",
+  "credit": "The Metropolitan Museum of Art, 43.106.2 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/dp/web-large/DP102226.jpg"
+ },
+ "authors/Dante Alighieri": {
+  "title": "Dante Alighieri 1265-1321, Florentine poet",
+  "date": "1475–1499",
+  "credit": "The Metropolitan Museum of Art, 2023.569.33 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/es/web-large/DP-33932-015.jpg"
+ },
+ "authors/Joseph Bédier": {
+  "title": "Box with Romance Scenes",
+  "date": "ca. 1310–30",
+  "credit": "The Metropolitan Museum of Art, 17.190.173a, b; 1988.16 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/DT229473.jpg"
+ },
+ "authors/Marie de France": {
+  "title": "Seated Lady Holding a Shield with an Unicorn",
+  "date": "1470–1491",
+  "credit": "The Metropolitan Museum of Art, 28.26.8 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/dp/web-large/DP279836.jpg"
+ },
+ "authors/Wolfram von Eschenbach": {
+  "title": "The Antioch \"Chalice\"",
+  "date": "500–550",
+  "credit": "The Metropolitan Museum of Art, 50.4 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/cl/web-large/DT113.jpg"
+ },
+ "authors/The Venerable Bede": {
+  "title": "Monk-Scribe Astride a Wyvern",
+  "date": "mid-12th century",
+  "credit": "The Metropolitan Museum of Art, 1982.60.396 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/MED58.jpg"
+ },
+ "authors/The English Chroniclers": {
+  "title": "Anglo-Saxon Sceat",
+  "date": "7th–8th century",
+  "credit": "The Metropolitan Museum of Art, 99.35.562 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/sf67-562s1.jpg"
+ },
+ "authors/Thomas à Kempis": {
+  "title": "Head of Christ",
+  "date": "12th century",
+  "credit": "The Metropolitan Museum of Art, 2017.145 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/DP-14824-006.jpg"
+ },
+ "authors/Julian of Norwich": {
+  "title": "Virgin",
+  "date": "ca. 1370–90",
+  "credit": "The Metropolitan Museum of Art, 25.120.368 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/cl/web-large/sf25-120-368s1.jpg"
+ },
+ "authors/Lady Gregory": {
+  "title": "Penannular Brooch",
+  "date": "9th century",
+  "credit": "The Metropolitan Museum of Art, 49.125.8 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/dp30620.jpg"
+ },
+ "authors/The Welsh Bards": {
+  "title": "Welsh Triple Harp",
+  "date": "ca. 1750",
+  "credit": "The Metropolitan Museum of Art, 89.4.1087 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/mi/web-large/DT267636.jpg"
+ },
+ "authors/Elias Lönnrot": {
+  "title": "Kantele",
+  "date": "19th century",
+  "credit": "The Metropolitan Museum of Art, 89.4.1005 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/mi/web-large/MUS1678.jpg"
+ },
+ "authors/Turold": {
+  "title": "Oliphant (Hunting Horn)",
+  "date": "ca. 1200",
+  "credit": "The Metropolitan Museum of Art, 04.3.178 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/aa/web-large/LC-04_3_178-007.jpg"
+ },
+ "authors/Pseudo-Dionysius": {
+  "title": "Textile with Saint Francis Receiving the Stigmata",
+  "date": "late 14th century",
+  "credit": "The Metropolitan Museum of Art, 64.101.1384 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/md/web-large/DP292064.jpg"
+ },
+ "works/divine-comedy": {
+  "title": "The Vision of Hell (Inferno)",
+  "date": "1866",
+  "credit": "The Metropolitan Museum of Art, 21.36.133 (CC0)",
+  "source": "https://images.metmuseum.org/CRDImages/dp/web-large/DP106349.jpg"
+ }
+}
