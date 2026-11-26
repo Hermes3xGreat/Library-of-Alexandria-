@@ -1,0 +1,57 @@
+{
+ "id": "americas",
+ "name": "Americas Scroll",
+ "version": "0.6",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.americasscroll.app",
+  "label": "Americas Scroll",
+  "versionCode": 6,
+  "versionName": "0.6",
+  "alias": "americasscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of the Americas",
+  "description": "the Americas: the Popol Vuh and the myths of Mexico and Peru, the conquest in the words of Bernal Díaz and Columbus, and the sacred stories of the Cherokee, Navaho, Iroquois, Sioux, Zuñi, Hopi, Algonquin, Tlingit and Inuit.",
+  "description_2": "the Americas: the Popol Vuh and the myths of Mexico and Peru, the conquest in the words of Bernal Díaz and Columbus, and the sacred stories of the Cherokee, Navaho, Iroquois, Sioux, Zuñi, Hopi, Algonquin, Tlingit and Inuit.",
+  "description_3": "the Americas: the Popol Vuh and the myths of Mexico and Peru, the conquest in the words of Bernal Díaz and Columbus, and the sacred stories of the Cherokee, Navaho, Iroquois, Sioux, Zuñi, Hopi, Algonquin, Tlingit and Inuit.\"><meta name=\"theme-color\" content=\"#9a6418",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "AMERICAS",
+  "export_site": "{{name}}",
+  "id": "americas",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "Americas",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of the Americas",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Popol Vuh, Cherokee, Navaho",
+  "intro_chime": "[0,.42,.84,1.26,1.68].forEach(function(t,e){l(e===0||e===3?65.41:87.31,{type:\"sine\",dur:.16,gain:e===0?.24:.16,attack:.003,release:.45,cutoff:400,rev:.45,when:t})}),[[392,.3,.5],[440,.85,.3],[523.25,1.2,.6],[440,1.85,.3],[392,2.2,1.3]].forEach(function(n){w(n[0],{gain:.16,dur:n[2]+.4,rev:.8,when:n[1]}),l(n[0],{type:\"sine\",dur:n[2],gain:.07,attack:.08,release:.6,cutoff:2000,rev:.8,when:n[1]})}),l(130.81,{type:\"triangle\",dur:3.4,gain:.1,attack:1.3,release:2.4,cutoff:600,rev:.7,when:.2})"
+ },
+ "color": "#9a6418",
+ "icon_color": "#9a6418",
+ "glyph": "☀",
+ "initials": "AS",
+ "mark_width": 1.1
+}
