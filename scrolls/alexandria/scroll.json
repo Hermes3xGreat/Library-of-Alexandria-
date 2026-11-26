@@ -1,0 +1,55 @@
+{
+  "id": "alexandria",
+  "name": "Library of Alexandria",
+  "version": "0.1",
+  "books": "books",
+  "data": null,
+  "web_extras": "web",
+  "android": {
+    "package": "com.libraryofalexandria.app",
+    "label": "Library of Alexandria",
+    "versionCode": 1,
+    "versionName": "0.1",
+    "alias": "alexandriascroll"
+  },
+  "text": {
+    "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+    "webgl_probe": "",
+    "subtitle": "The Library of Alexandria",
+    "description": "The Library of Alexandria: every Scroll in one offline library.",
+    "description_2": "The Library of Alexandria: every Scroll in one offline library.",
+    "description_3": "The Library of Alexandria: every Scroll in one offline library.\"><meta name=\"theme-color\" content=\"#14264a",
+    "favicon": {
+      "file": "text/favicon.txt"
+    },
+    "banner_image": {
+      "file": "text/banner_image.txt"
+    },
+    "footer_links": "",
+    "footer_links_end": "",
+    "covers": "",
+    "slot_label_langs": "\\w+",
+    "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+    "id_upper": "ALEXANDRIA",
+    "export_site": "{{name}}",
+    "id": "alexandria",
+    "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+    "site_url": "",
+    "intro_tagline_end": "Alexandria",
+    "omni_word_test": "1",
+    "omni_hint": " or an idea — or search every passage",
+    "welcome_sub": "library of the Alexandria",
+    "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+    "welcome_locus_word": "reference",
+    "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+    "parallel_hint": "the original text or another translation",
+    "share_stub_url": "",
+    "search_examples": "Search...",
+    "intro_chime": "w(110,{gain:.34,dur:4.2,rev:.85,when:.02}),[293.66,329.63,392,440,587.33,659.25].forEach(function(t,e){l(t,{type:\"triangle\",dur:.35,gain:.2,attack:.004,release:1.6,cutoff:3200,rev:.6,when:.5+e*.16}),l(t*2,{type:\"sine\",dur:.2,gain:.05,attack:.004,release:1,cutoff:5000,rev:.6,when:.5+e*.16})}),[146.83,220].forEach(function(t){l(t,{type:\"sine\",dur:3,gain:.1,attack:1.2,release:2.4,cutoff:1800,rev:.7})}),w(1174.66,{gain:.12,dur:2.2,rev:.85,when:1.6})"
+  },
+  "color": "#14264a",
+  "icon_color": "#14264a",
+  "glyph": "Α",
+  "initials": "LA",
+  "mark_width": 1.1
+}
