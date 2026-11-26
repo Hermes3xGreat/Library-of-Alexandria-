@@ -1,0 +1,57 @@
+{
+ "id": "crescent",
+ "name": "Crescent Scroll",
+ "version": "0.7",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.crescentscroll.app",
+  "label": "Crescent Scroll",
+  "versionCode": 7,
+  "versionName": "0.7",
+  "alias": "crescentscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of the Near East",
+  "description": "the Near East: Gilgamesh and the tablets of Babylon, the Code of Hammurabi, the Avesta, the Shahnameh, Rumi, Hafiz and Omar Khayyam, the Qur’an and the Arabian Nights, the Bible, the Apocrypha, Enoch and the Talmud.",
+  "description_2": "the Near East: Gilgamesh and the tablets of Babylon, the Code of Hammurabi, the Avesta, the Shahnameh, Rumi, Hafiz and Omar Khayyam, the Qur’an and the Arabian Nights, the Bible, the Apocrypha, Enoch and the Talmud.",
+  "description_3": "the Near East: Gilgamesh and the tablets of Babylon, the Code of Hammurabi, the Avesta, the Shahnameh, Rumi, Hafiz and Omar Khayyam, the Qur’an and the Arabian Nights, the Bible, the Apocrypha, Enoch and the Talmud.\"><meta name=\"theme-color\" content=\"#5b3577",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "CRESCENT",
+  "export_site": "{{name}}",
+  "id": "crescent",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "Near East",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of the Near East",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Gilgamesh, Rumi, Genesis",
+  "intro_chime": "[0,.5,1.0,1.5].forEach(function(t,e){l(e%2?110:73.42,{type:\"sine\",dur:.12,gain:e%2?.12:.2,attack:.002,release:.35,cutoff:500,rev:.4,when:t})}),[293.66,311.13,349.23,392,349.23,311.13,293.66].forEach(function(f,e){var t=.25+e*.19;l(f,{type:\"triangle\",dur:.18,gain:.17,attack:.002,release:1.4,cutoff:3200,rev:.7,when:t}),l(f*1.003,{type:\"square\",dur:.1,gain:.035,attack:.002,release:.9,cutoff:2400,rev:.7,when:t+.012})}),l(146.83,{type:\"sawtooth\",dur:3.2,gain:.07,attack:1.2,release:2.2,cutoff:700,rev:.75,when:.3}),l(220,{type:\"sawtooth\",dur:2.6,gain:.05,attack:1.2,release:2,cutoff:700,rev:.75,when:.9}),w(587.33,{gain:.15,dur:2.6,rev:.85,when:1.9})"
+ },
+ "color": "#5b3577",
+ "icon_color": "#5b3577",
+ "glyph": "✷",
+ "initials": "CS",
+ "mark_width": 1.1
+}
