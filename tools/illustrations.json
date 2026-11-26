@@ -1,0 +1,301 @@
+{
+ "adams-familiar-letters": {
+  "scroll": "liberty",
+  "pg": "34123",
+  "max": 800
+ },
+ "addison-knights-templars": {
+  "scroll": "northern",
+  "pg": "38593",
+  "max": 800
+ },
+ "blavatsky-isis-unveiled-1": {
+  "scroll": "northern",
+  "pg": "68705"
+ },
+ "blavatsky-isis-unveiled-2": {
+  "scroll": "northern",
+  "pg": "75871"
+ },
+ "blavatsky-secret-doctrine-1": {
+  "scroll": "northern",
+  "pg": "54824"
+ },
+ "blavatsky-secret-doctrine-2": {
+  "scroll": "northern",
+  "pg": "54488"
+ },
+ "blavatsky-secret-doctrine-3": {
+  "scroll": "northern",
+  "pg": "56880"
+ },
+ "bleek-reynard-south-africa": {
+  "scroll": "africa",
+  "pg": "73413",
+  "max": 800
+ },
+ "bradford-plymouth": {
+  "scroll": "liberty",
+  "pg": "24950",
+  "max": 800
+ },
+ "budge-creation-tablets": {
+  "scroll": "crescent",
+  "pg": "9914",
+  "max": 800
+ },
+ "budge-deluge": {
+  "scroll": "crescent",
+  "pg": "7096",
+  "max": 800
+ },
+ "budge-future-life": {
+  "scroll": "egyptian",
+  "pg": "11277",
+  "max": 800
+ },
+ "budge-literature-egyptians": {
+  "scroll": "egyptian",
+  "pg": "15932",
+  "max": 800
+ },
+ "cherokee-myths": {
+  "scroll": "americas",
+  "pg": "45634",
+  "max": 800
+ },
+ "cherokee-sacred-formulas": {
+  "scroll": "americas",
+  "pg": "24788",
+  "max": 800
+ },
+ "cronise-cunnie-rabbit": {
+  "scroll": "africa",
+  "pg": "48828",
+  "max": 800
+ },
+ "culpeper-complete-herbal": {
+  "scroll": "northern",
+  "pg": "49513"
+ },
+ "dayrell-ikom-folk-stories": {
+  "scroll": "africa",
+  "pg": "70959",
+  "max": 800
+ },
+ "dayrell-southern-nigeria": {
+  "scroll": "africa",
+  "pg": "34655",
+  "max": 800
+ },
+ "du-bois-souls": {
+  "scroll": "liberty",
+  "pg": "408",
+  "max": 800
+ },
+ "equiano-narrative": {
+  "scroll": "africa",
+  "pg": "15399",
+  "max": 800
+ },
+ "eskimo-folk-tales": {
+  "scroll": "americas",
+  "pg": "28932",
+  "max": 800
+ },
+ "fitzpatrick-jock-of-the-bushveld": {
+  "scroll": "africa",
+  "pg": "36951",
+  "max": 800
+ },
+ "ginsburg-kabbalah": {
+  "scroll": "northern",
+  "pg": "69243"
+ },
+ "grant-memoirs": {
+  "scroll": "liberty",
+  "pg": "4367",
+  "max": 800
+ },
+ "history-woman-suffrage-1": {
+  "scroll": "liberty",
+  "pg": "28020",
+  "max": 800
+ },
+ "hobley-bantu-beliefs": {
+  "scroll": "africa",
+  "pg": "67426",
+  "max": 800
+ },
+ "hopi-unwritten-literature": {
+  "scroll": "americas",
+  "pg": "15888",
+  "max": 800
+ },
+ "kierkegaard-selections": {
+  "scroll": "descartes",
+  "pg": "60333",
+  "max": 800
+ },
+ "lenape-walam-olum": {
+  "scroll": "americas",
+  "pg": "46422",
+  "max": 800
+ },
+ "levi-history-of-magic": {
+  "scroll": "northern",
+  "pg": "70033"
+ },
+ "lincoln-speeches-letters": {
+  "scroll": "liberty",
+  "pg": "14721",
+  "max": 800
+ },
+ "locke-essay-1": {
+  "scroll": "descartes",
+  "pg": "10615",
+  "max": 800
+ },
+ "mackey-symbolism-of-freemasonry": {
+  "scroll": "liberty",
+  "pg": "11937",
+  "aspect": 3.0
+ },
+ "midewiwin": {
+  "scroll": "americas",
+  "pg": "19368",
+  "max": 800
+ },
+ "muir-story-of-alchemy": {
+  "scroll": "northern",
+  "pg": "14218"
+ },
+ "nassau-where-animals-talk": {
+  "scroll": "africa",
+  "pg": "58900",
+  "max": 800
+ },
+ "navaho-legends": {
+  "scroll": "americas",
+  "pg": "60165",
+  "max": 800
+ },
+ "nietzsche-birth-of-tragedy": {
+  "scroll": "descartes",
+  "pg": "51356",
+  "max": 800
+ },
+ "northup-twelve-years": {
+  "scroll": "liberty",
+  "pg": "45631",
+  "max": 800
+ },
+ "parzival-1": {
+  "scroll": "northern",
+  "pg": "47297",
+  "max": 800
+ },
+ "popol-vuh": {
+  "scroll": "americas",
+  "pg": "56550",
+  "max": 800
+ },
+ "redgrove-alchemy-ancient-and-modern": {
+  "scroll": "northern",
+  "pg": "43240"
+ },
+ "riis-other-half": {
+  "scroll": "liberty",
+  "pg": "45502",
+  "max": 800
+ },
+ "rousseau-social-contract": {
+  "scroll": "descartes",
+  "pg": "46333",
+  "max": 800
+ },
+ "schopenhauer-world-as-will-1": {
+  "scroll": "descartes",
+  "pg": "38427",
+  "max": 800
+ },
+ "scot-discoverie-of-witchcraft": {
+  "scroll": "northern",
+  "pg": "60766",
+  "min": 28,
+  "no_front": true
+ },
+ "scott-cathedral-builders": {
+  "scroll": "northern",
+  "pg": "42072",
+  "max": 800
+ },
+ "sepharial-astrology": {
+  "scroll": "northern",
+  "pg": "46963"
+ },
+ "silberer-hidden-symbolism": {
+  "scroll": "northern",
+  "pg": "27755"
+ },
+ "spence-myths-mexico-peru": {
+  "scroll": "americas",
+  "pg": "53080",
+  "max": 800
+ },
+ "summers-history-of-witchcraft": {
+  "scroll": "northern",
+  "pg": "77145"
+ },
+ "theal-kaffir-folk-lore": {
+  "scroll": "africa",
+  "pg": "71335",
+  "max": 800
+ },
+ "thornburgh-masonic-monitor": {
+  "scroll": "liberty",
+  "pg": "30118"
+ },
+ "thorndike-place-of-magic": {
+  "scroll": "northern",
+  "pg": "69622"
+ },
+ "upham-salem-witchcraft": {
+  "scroll": "liberty",
+  "pg": "17845"
+ },
+ "waite-key-to-the-tarot": {
+  "scroll": "northern",
+  "pg": "43548"
+ },
+ "washington-masonic-correspondence": {
+  "scroll": "liberty",
+  "pg": "29949",
+  "max": 800
+ },
+ "weeks-congo-life-folklore": {
+  "scroll": "africa",
+  "pg": "69558",
+  "max": 800
+ },
+ "weigall-akhnaton": {
+  "scroll": "egyptian",
+  "pg": "62434",
+  "max": 800
+ },
+ "west-african-folk-tales": {
+  "scroll": "africa",
+  "pg": "66923",
+  "max": 800
+ },
+ "zanzibar-tales": {
+  "scroll": "africa",
+  "pg": "37472",
+  "max": 800
+ },
+ "zuni-folk-tales": {
+  "scroll": "americas",
+  "pg": "54682",
+  "max": 800
+ }
+}

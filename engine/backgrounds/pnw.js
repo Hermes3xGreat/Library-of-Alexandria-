@@ -1,0 +1,178 @@
+/* Liberty Scroll — animated background: the Pacific Northwest. A snow-capped
+   volcano over layered ridges of fir forest, fog drifting between the ridges,
+   a still lake reflecting the peak, an eagle circling; a cool morning by day,
+   stars and the moon on the water at night. Same window.__hvLib3D /
+   hvSetLib3D interface. */
+(function(){
+  if (window.__hvLib3D) return;
+  var ID = 'hv-lib3d';
+  var PAL = {
+    light: { sky:['#9fc2dc','#c9dde9','#eef0ea'], disc:'#fff6dc', glow:'255,250,230', peak:[150,166,186], peakShade:[118,134,156], snow:'#fbfdff', snowShade:'#d2dce8', ridges:[[106,134,128],[72,104,94],[46,76,66],[26,50,42]], fog:'236,242,244', water:[150,176,186], waterHi:'255,255,255', bird:'#2a2a2a', star:0 },
+    sepia: { sky:['#d6d0bc','#e2dac4','#ece4d0'], disc:'#fff4dc', glow:'250,240,210', peak:[160,158,150], peakShade:[130,128,122], snow:'#fbf8f0', snowShade:'#ddd6c6', ridges:[[128,132,110],[98,106,84],[70,80,60],[46,54,40]], fog:'240,234,220', water:[160,164,150], waterHi:'255,250,236', bird:'#3a3226', star:0 },
+    dark:  { sky:['#04070e','#0a1420','#14233a'], disc:'#eef2f6', glow:'190,210,240', peak:[44,54,72], peakShade:[30,38,54], snow:'#c6d0de', snowShade:'#8a96aa', ridges:[[22,34,40],[16,26,30],[10,18,20],[5,10,12]], fog:'120,140,165', water:[16,26,40], waterHi:'210,225,255', bird:'#0a0c10', star:1 }
+  };
+  function theme(){ var t = document.documentElement.getAttribute('data-theme'); return (t === 'dark' || t === 'sepia') ? t : 'light'; }
+  function rnd(seed){ var s = seed >>> 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function rgb(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+  var cv, cx, veil, W = 0, H = 0, DPR = 1, running = false, raf = 0, last = 0, T = 0, boost = 0, curTheme = '', frames = 0;
+  var stars = [], ridges = [], fogs = [], eagle = { a: 0 }, LAKE = 0, scene = null;
+
+  function ridge(seed, base, amp, treeH, density){
+    var r = rnd(seed), k = [], i, trees = [], x;
+    for (i = 1; i <= 3; i++) k.push({ f: i * (0.6 + r() * 0.8), a: amp / i, p: r() * 6.283 });
+    function y(x){ var v = 0; for (var j = 0; j < k.length; j++) v += Math.sin(x / W * 6.283 * k[j].f + k[j].p) * k[j].a; return base + v; }
+    for (x = -10; x < W + 10; x += treeH * density * (0.5 + r() * 0.6)) trees.push({ x: x, h: treeH * (0.7 + r() * 0.6) });
+    return { y: y, trees: trees };
+  }
+  function build(){
+    curTheme = theme();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    LAKE = H * 0.74;
+    var r = rnd(4392), i, u = Math.min(W, H);
+    stars = []; for (i = 0; i < Math.min(260, W * H / 2000); i++) stars.push({ x: r() * W, y: r() * H * 0.5, s: r() * 1.3 + 0.3, p: r() * 6.283 });
+    ridges = [ridge(11, H * 0.56, H * 0.025, u * 0.035, 0.55), ridge(23, H * 0.63, H * 0.03, u * 0.05, 0.5), ridge(37, H * 0.71, H * 0.02, u * 0.07, 0.45), ridge(51, H * 1.0, H * 0.025, u * 0.16, 0.6)];
+    fogs = []; for (i = 0; i < 6; i++) fogs.push({ x: r() * W, y: H * (0.55 + r() * 0.18), w: W * (0.4 + r() * 0.5), v: 4 + r() * 6 });
+    scene = document.createElement('canvas'); scene.width = cv.width; scene.height = cv.height;
+    drawStatic(scene.getContext('2d'));
+  }
+  function fir(g, x, y, h){
+    var w = h * 0.36;
+    g.beginPath(); g.moveTo(x, y - h);
+    for (var i = 1; i <= 4; i++){ var t = i / 4; g.lineTo(x + w * t * 0.5 + w * 0.12, y - h + h * t * 0.92); g.lineTo(x + w * t * 0.32, y - h + h * t * 0.92 - h * 0.04); }
+    g.lineTo(x + w * 0.08, y); g.lineTo(x - w * 0.08, y);
+    for (i = 4; i >= 1; i--){ var t2 = i / 4; g.lineTo(x - w * t2 * 0.32, y - h + h * t2 * 0.92 - h * 0.04); g.lineTo(x - w * t2 * 0.5 - w * 0.12, y - h + h * t2 * 0.92); }
+    g.closePath(); g.fill();
+  }
+  function mountain(g, P, flip){
+    // a broad stratovolcano: gentle summit dome, long concave flanks
+    var px = W * 0.6, py = H * 0.24, bw = Math.max(W * 1.25, H * 0.8), base = H * 0.62;
+    function my(t){ var u = Math.abs(t); return py + (base - py) * (0.6 * Math.pow(u, 1.5) + 0.4 * (1 - Math.pow(1 - u, 2))) + Math.sin(t * 23) * H * 0.003; }
+    function mx(t){ return px + t * bw * 0.5; }
+    var t, i;
+    g.save(); if (flip) { g.translate(0, LAKE * 2); g.scale(1, -1); }
+    g.fillStyle = rgb(P.peak); g.beginPath(); g.moveTo(mx(-1), base + 60);
+    for (t = -1; t <= 1.0001; t += 0.02) g.lineTo(mx(t), my(t));
+    g.lineTo(mx(1), base + 60); g.fill();
+    // snow cap with a ragged lower edge and glacier tongues
+    var snowY = py + (base - py) * 0.55;
+    g.fillStyle = P.snow; g.beginPath();
+    var pts = [];
+    for (t = -1; t <= 1.0001; t += 0.01){ var y = my(t); if (y <= snowY + H * 0.05) pts.push([mx(t), y]); }
+    g.moveTo(pts[0][0], pts[0][1]);
+    for (i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+    for (i = pts.length - 1; i >= 0; i--){ var x = pts[i][0], k = (x - px) / (bw * 0.5);
+      var edge = snowY + Math.sin(k * 31) * H * 0.012 + Math.max(0, Math.sin(k * 11 + 1)) * H * 0.045 - Math.abs(k) * H * 0.02;
+      g.lineTo(x, Math.max(my(k), edge)); }
+    g.fill();
+    // shading on the east (right) side and a few rock ribs
+    g.fillStyle = 'rgba(40,60,90,.16)'; g.beginPath(); g.moveTo(px + bw * 0.02, my(0.04));
+    for (t = 0.04; t <= 1.0001; t += 0.02) g.lineTo(mx(t), my(t));
+    g.lineTo(mx(1), base + 60); g.lineTo(px + bw * 0.12, base + 60); g.fill();
+    g.strokeStyle = P.snowShade; g.lineWidth = 1; g.globalAlpha = 0.6;
+    [-0.32, -0.14, 0.1, 0.26].forEach(function(k){ g.beginPath(); g.moveTo(mx(k * 0.4), my(k * 0.4) + 3); g.quadraticCurveTo(mx(k * 0.8), my(k * 0.8), mx(k * 1.05), snowY + H * 0.02); g.stroke(); });
+    g.restore();
+  }
+  function drawStatic(g){
+    var P = PAL[curTheme], i, j, x;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var sky = g.createLinearGradient(0, 0, 0, H * 0.6);
+    sky.addColorStop(0, P.sky[0]); sky.addColorStop(0.6, P.sky[1]); sky.addColorStop(1, P.sky[2]);
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    var mx = W * 0.2, my = H * 0.15, mr = Math.min(W, H) * 0.04;
+    var gl = g.createRadialGradient(mx, my, 0, mx, my, mr * 7); gl.addColorStop(0, 'rgba(' + P.glow + ',.45)'); gl.addColorStop(1, 'rgba(' + P.glow + ',0)');
+    g.fillStyle = gl; g.fillRect(mx - mr * 7, my - mr * 7, mr * 14, mr * 14);
+    g.fillStyle = P.disc; g.beginPath(); g.arc(mx, my, mr, 0, 6.283); g.fill();
+    mountain(g, P, false);
+    for (i = 0; i < ridges.length; i++){
+      var rd = ridges[i], c = P.ridges[i];
+      g.fillStyle = rgb(c); g.beginPath(); g.moveTo(0, H);
+      for (x = 0; x <= W; x += 6) g.lineTo(x, rd.y(x)); g.lineTo(W, H); g.fill();
+      for (j = 0; j < rd.trees.length; j++){ var tr = rd.trees[j]; fir(g, tr.x, rd.y(tr.x) + tr.h * 0.15, tr.h); }
+      if (i === 2){                                                                              // the lake sits in front of the third ridge
+        var wg = g.createLinearGradient(0, LAKE, 0, H); wg.addColorStop(0, rgb(P.water)); wg.addColorStop(1, rgb(P.water, 0.85));
+        g.fillStyle = wg; g.fillRect(0, LAKE, W, H - LAKE);
+        g.save(); g.beginPath(); g.rect(0, LAKE, W, H - LAKE); g.clip(); g.globalAlpha = 0.35; mountain(g, P, true); g.globalAlpha = 0.45; var rr = ridges[2]; g.fillStyle = rgb(P.ridges[1]); g.beginPath(); g.moveTo(0, LAKE); for (x = 0; x <= W; x += 6) g.lineTo(x, LAKE + (LAKE - rr.y(x)) * -1 + (LAKE - rr.y(x)) * 2 + 8); g.lineTo(W, LAKE); g.fill(); g.restore();
+      }
+    }
+  }
+  function draw(dt){
+    var P = PAL[curTheme], g = cx, i;
+    g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(scene, 0, 0); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    if (P.star) for (i = 0; i < stars.length; i++){ var st = stars[i]; if (st.y > H * 0.2 + Math.abs(st.x - W * 0.62) * 0.4 && st.x > W * 0.2) continue; g.fillStyle = 'rgba(236,240,255,' + (0.25 + 0.5 * (0.5 + 0.5 * Math.sin(T * 1.1 + st.p))) + ')'; g.fillRect(st.x, st.y, st.s, st.s); }
+    for (i = 0; i < fogs.length; i++){ var f = fogs[i]; f.x += (f.v + boost * 20) * dt; if (f.x - f.w / 2 > W) f.x = -f.w / 2;
+      var fg = g.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.w / 2); fg.addColorStop(0, 'rgba(' + P.fog + ',.32)'); fg.addColorStop(1, 'rgba(' + P.fog + ',0)');
+      g.save(); g.translate(f.x, f.y); g.scale(1, 0.22); g.translate(-f.x, -f.y); g.fillStyle = fg; g.fillRect(f.x - f.w / 2, f.y - f.w / 2, f.w, f.w); g.restore(); }
+    // ripples on the lake and the moon/sun path
+    var mx = W * 0.2;
+    for (i = 0; i < 18; i++){ var ly = LAKE + 6 + (i * 37 % 100) / 100 * (H - LAKE - 30), lx = mx + Math.sin(i * 2.3 + T * 0.6) * (10 + (ly - LAKE) * 0.25);
+      g.strokeStyle = 'rgba(' + P.waterHi + ',' + (0.18 + 0.2 * Math.sin(T * 1.8 + i)) + ')'; g.lineWidth = 1; g.beginPath(); g.moveTo(lx - 10, ly); g.lineTo(lx + 10, ly); g.stroke(); }
+    // eagle circling above the ridges
+    eagle.a += dt * (0.18 + boost * 0.5);
+    var ex = W * 0.45 + Math.cos(eagle.a) * W * 0.22, ey = H * 0.3 + Math.sin(eagle.a) * H * 0.05, es = Math.min(W, H) * 0.018, fl = Math.sin(T * 1.3) * 0.15;
+    g.strokeStyle = P.bird; g.lineWidth = Math.max(1.6, es * 0.22); g.lineCap = 'round';
+    g.beginPath(); g.moveTo(ex - es * 1.6, ey - es * (0.35 + fl)); g.quadraticCurveTo(ex - es * 0.7, ey - es * 0.55, ex, ey); g.quadraticCurveTo(ex + es * 0.7, ey - es * 0.55, ex + es * 1.6, ey - es * (0.35 + fl)); g.stroke();
+  }
+  function frame(now){
+    raf = 0; if (!running) return;
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now; T += dt; boost *= .96; frames++;
+    draw(dt); raf = requestAnimationFrame(frame);
+  }
+  function start(){ running = true; if (!raf && !document.hidden){ last = 0; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+  function resize(){ W = window.innerWidth; H = window.innerHeight; build(); draw(0); }
+  function init(){
+    if (window.__hvLib3D) return;
+    cv = document.createElement('canvas'); cv.id = ID; cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;display:block';
+    cx = cv.getContext('2d', { alpha: false });
+    if (!cx) return;
+    document.body.insertBefore(cv, document.body.firstChild);
+    veil = document.getElementById('hv-lib3d-veil');
+    if (!veil){ veil = document.createElement('div'); veil.id = 'hv-lib3d-veil'; veil.setAttribute('aria-hidden', 'true'); document.body.insertBefore(veil, cv.nextSibling); }
+    W = window.innerWidth; H = window.innerHeight; build(); draw(0);
+    var rz = 0; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(resize, 160); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = 0; } } else if (running) start(); });
+    try { new MutationObserver(function(){ if (theme() !== curTheme){ build(); draw(0); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    document.documentElement.classList.remove('hv-lib3d-off'); document.documentElement.classList.add('hv-lib3d-on');
+    window.__hvLib3D = { canvas: cv, gl: null, scrolls: 0, stop: stop, start: start, boost: function(){ boost = 1; },
+      _q: function(){ return { running: running, frames: frames, theme: curTheme, w: W, h: H }; }, _setShot: function(){} };
+    start(); scope();
+  }
+  function isReading(){
+    try {
+      var r = document.querySelector('[data-view]'), v = r ? r.getAttribute('data-view') : null;
+      if (v === 'article' || v === 'dict' || document.documentElement.classList.contains('hv-conc-open')) return true;
+      var u = document.getElementById('reader-view'); if (u && u.classList.contains('open')) return true;
+    } catch (e) {}
+    return false;
+  }
+  var was = null;
+  function sync(){
+    var r = isReading(); if (r === was) return; was = r; var d = document.documentElement;
+    if (r){ d.classList.add('hv-reading'); d.classList.remove('hv-lib3d-on'); stop(); }
+    else { d.classList.remove('hv-reading'); d.classList.add('hv-lib3d-on'); start(); }
+  }
+  function watch(){
+    var r = document.querySelector('[data-view]');
+    if (r && !r.__hvScopeObs){ r.__hvScopeObs = new MutationObserver(sync); r.__hvScopeObs.observe(r, { attributes: true, attributeFilter: ['data-view'] }); }
+    var v = document.getElementById('reader-view');
+    if (v && !v.__hvScopeObs){ v.__hvScopeObs = new MutationObserver(sync); v.__hvScopeObs.observe(v, { attributes: true, attributeFilter: ['class'] }); }
+  }
+  function scope(){
+    window.addEventListener('hashchange', function(){ watch(); sync(); }); window.addEventListener('popstate', function(){ watch(); sync(); });
+    watch(); sync(); setTimeout(function(){ watch(); sync(); }, 700); setTimeout(function(){ watch(); sync(); }, 2500);
+  }
+  function enabled(){ try { return localStorage.getItem('hermes_lib3d') !== 'off' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return true; } }
+  function boot(){ if (enabled()) init(); else document.documentElement.classList.add('hv-lib3d-off'); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.hvSetLib3D = function(on){
+    try { localStorage.setItem('hermes_lib3d', on ? 'on' : 'off'); } catch (e) {}
+    var d = document.documentElement;
+    if (on){ if (window.__hvLib3D){ d.classList.remove('hv-lib3d-off'); d.classList.add('hv-lib3d-on'); cv.style.display = 'block'; start(); } else init(); }
+    else { stop(); if (cv) cv.style.display = 'none'; d.classList.remove('hv-lib3d-on'); d.classList.add('hv-lib3d-off'); }
+    return !!on;
+  };
+  window.hvLib3DEnabled = function(){ try { return localStorage.getItem('hermes_lib3d') !== 'off'; } catch (e) { return false; } };
+})();

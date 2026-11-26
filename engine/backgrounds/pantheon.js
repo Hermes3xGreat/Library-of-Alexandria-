@@ -1,0 +1,159 @@
+/* Pantheon Scroll — animated background: the classical Mediterranean. A
+   columned temple on its rock above the sea, a Roman aqueduct striding across
+   the valley, cypresses and olives, a galley under sail on the bay; golden
+   evening by day, moon and stars on the water at night. Same
+   window.__hvLib3D / hvSetLib3D interface. */
+(function(){
+  if (window.__hvLib3D) return;
+  var ID = 'hv-lib3d';
+  var PAL = {
+    light: { sky:['#bfd9ea','#f1e2c2','#f3c79a'], disc:'#fff3cf', glow:'255,230,170', isle:[150,160,176], sea:[98,150,176], seaHi:'255,248,225', rock:[176,150,120], rockSh:[140,116,92], marble:'#f6efe2', marbleSh:'#cdbfa8', roof:'#b46a4a', aq:[196,170,138], aqSh:[150,126,100], hill:[124,136,84], near:[70,84,48], tree:[38,58,40], olive:[98,112,84], sail:'#f4ead6', hull:[70,44,30], star:0 },
+    sepia: { sky:['#e0dcc8','#eadcb8','#dcba90'], disc:'#fff0cc', glow:'250,228,176', isle:[160,156,150], sea:[128,144,140], seaHi:'255,246,224', rock:[176,154,126], rockSh:[142,122,98], marble:'#f4ecdc', marbleSh:'#cbbda4', roof:'#a8694c', aq:[190,168,138], aqSh:[150,130,104], hill:[134,132,92], near:[84,84,54], tree:[52,58,40], olive:[108,110,84], sail:'#f2e8d2', hull:[74,52,36], star:0 },
+    dark:  { sky:['#04060f','#0c1428','#1c2440'], disc:'#f0ecd8', glow:'200,205,240', isle:[26,32,50], sea:[14,24,44], seaHi:'210,220,255', rock:[40,38,46], rockSh:[26,24,32], marble:'#9a9aa4', marbleSh:'#62626e', roof:'#4a3438', aq:[52,48,56], aqSh:[32,30,38], hill:[18,24,22], near:[8,12,10], tree:[4,8,6], olive:[14,20,18], sail:'#8a8a94', hull:[10,8,10], star:1 }
+  };
+  function theme(){ var t = document.documentElement.getAttribute('data-theme'); return (t === 'dark' || t === 'sepia') ? t : 'light'; }
+  function rnd(seed){ var s = seed >>> 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function rgb(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+  var cv, cx, veil, W = 0, H = 0, DPR = 1, running = false, raf = 0, last = 0, T = 0, boost = 0, curTheme = '', frames = 0;
+  var stars = [], cyp = [], ship = { x: 0 }, SEA = 0, U = 1, gulls = [];
+
+  function build(){
+    curTheme = theme();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    SEA = H * 0.6; U = Math.min(W, H);
+    var r = rnd(753), i;
+    stars = []; for (i = 0; i < Math.min(240, W * H / 2200); i++) stars.push({ x: r() * W, y: r() * SEA * 0.92, s: r() * 1.3 + 0.3, p: r() * 6.283 });
+    cyp = []; for (i = 0; i < Math.max(6, Math.round(W / 70)); i++) cyp.push({ x: r() * W, s: 0.7 + r() * 0.7, o: r() < 0.35, p: r() * 6.283 });
+    gulls = []; for (i = 0; i < 4; i++) gulls.push({ x: r() * W, y: H * (0.2 + r() * 0.18), v: 12 + r() * 10, p: r() * 6.283 });
+    ship.x = W * 0.55;
+  }
+  function temple(g, x, base, w, P){
+    var h = w * 0.42, n = 6, i, cw = w / (n * 2.1);
+    g.fillStyle = P.marbleSh; g.fillRect(x - w * 0.56, base - h * 0.1, w * 1.12, h * 0.1);          // steps
+    g.fillStyle = P.marble; g.fillRect(x - w * 0.52, base - h * 0.17, w * 1.04, h * 0.08);
+    g.fillStyle = P.marbleSh; g.fillRect(x - w * 0.46, base - h * 0.72, w * 0.92, h * 0.56);         // cella in shade
+    g.fillStyle = P.marble;
+    for (i = 0; i < n; i++){ var cxp = x - w * 0.46 + (i + 0.5) * (w * 0.92 / n); g.fillRect(cxp - cw / 2, base - h * 0.72, cw, h * 0.56); }
+    g.fillRect(x - w * 0.5, base - h * 0.8, w, h * 0.09);                                            // entablature
+    g.beginPath(); g.moveTo(x - w * 0.52, base - h * 0.8); g.lineTo(x, base - h * 1.08); g.lineTo(x + w * 0.52, base - h * 0.8); g.fill();
+    g.fillStyle = P.marbleSh; g.beginPath(); g.moveTo(x - w * 0.4, base - h * 0.82); g.lineTo(x, base - h * 1.02); g.lineTo(x + w * 0.4, base - h * 0.82); g.fill();
+  }
+  function aqueduct(g, x0, x1, top, base, P){
+    var span = (base - top) * 0.62, n = Math.max(2, Math.round((x1 - x0) / span)), w = (x1 - x0) / n, i;
+    g.fillStyle = rgb(P.aq); g.fillRect(x0, top, x1 - x0, base - top);
+    g.fillStyle = rgb(P.aqSh); g.fillRect(x0, top + (base - top) * 0.1, x1 - x0, 2);
+    g.globalCompositeOperation = 'destination-out';
+    for (i = 0; i < n; i++){ var ax = x0 + i * w + w * 0.16, aw = w * 0.68, ay = top + (base - top) * 0.2;
+      g.beginPath(); g.moveTo(ax, base + 2); g.lineTo(ax, ay + aw / 2); g.arc(ax + aw / 2, ay + aw / 2, aw / 2, Math.PI, 0); g.lineTo(ax + aw, base + 2); g.fill(); }
+    g.globalCompositeOperation = 'source-over';
+  }
+  function cypress(g, x, y, s, col){ var h = U * 0.13 * s; g.fillStyle = rgb(col); g.beginPath(); g.moveTo(x, y - h); g.bezierCurveTo(x + h * 0.16, y - h * 0.6, x + h * 0.14, y - h * 0.1, x, y); g.bezierCurveTo(x - h * 0.14, y - h * 0.1, x - h * 0.16, y - h * 0.6, x, y - h); g.fill(); }
+  function olive(g, x, y, s, col, trunk){ var h = U * 0.07 * s; g.fillStyle = rgb(trunk); g.fillRect(x - h * 0.05, y - h * 0.5, h * 0.1, h * 0.5); g.fillStyle = rgb(col);
+    g.beginPath(); g.arc(x, y - h * 0.75, h * 0.42, 0, 6.283); g.arc(x - h * 0.36, y - h * 0.6, h * 0.3, 0, 6.283); g.arc(x + h * 0.36, y - h * 0.62, h * 0.32, 0, 6.283); g.fill(); }
+  var layer = null;
+  function draw(dt){
+    var P = PAL[curTheme], g = cx, i, x;
+    var sky = g.createLinearGradient(0, 0, 0, SEA);
+    sky.addColorStop(0, P.sky[0]); sky.addColorStop(0.6, P.sky[1]); sky.addColorStop(1, P.sky[2]);
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    if (P.star) for (i = 0; i < stars.length; i++){ var st = stars[i]; g.fillStyle = 'rgba(240,238,255,' + (0.3 + 0.5 * (0.5 + 0.5 * Math.sin(T * 1.1 + st.p))) + ')'; g.fillRect(st.x, st.y, st.s, st.s); }
+    var sx = W * 0.78, sy = H * 0.14, sr = U * 0.05;
+    var gl = g.createRadialGradient(sx, sy, 0, sx, sy, sr * 6); gl.addColorStop(0, 'rgba(' + P.glow + ',.5)'); gl.addColorStop(1, 'rgba(' + P.glow + ',0)');
+    g.fillStyle = gl; g.fillRect(sx - sr * 6, sy - sr * 6, sr * 12, sr * 12);
+    g.fillStyle = P.disc; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill();
+    // far islands and the sea
+    g.fillStyle = rgb(P.isle, 0.8); g.beginPath(); g.moveTo(W * 0.5, SEA); g.quadraticCurveTo(W * 0.62, SEA - H * 0.05, W * 0.76, SEA - H * 0.02); g.quadraticCurveTo(W * 0.9, SEA - H * 0.06, W * 1.05, SEA); g.fill();
+    var sg = g.createLinearGradient(0, SEA, 0, H * 0.8); sg.addColorStop(0, rgb(P.sea)); sg.addColorStop(1, rgb(P.sea, 0.9));
+    g.fillStyle = sg; g.fillRect(0, SEA, W, H - SEA);
+    for (i = 0; i < 22; i++){ var ly = SEA + 5 + (i * 37 % 100) / 100 * (H * 0.16), lx = sx + Math.sin(i * 2.1 + T * 0.5) * (8 + (ly - SEA) * 0.5);
+      g.strokeStyle = 'rgba(' + P.seaHi + ',' + (0.2 + 0.25 * Math.sin(T * 1.8 + i)) + ')'; g.lineWidth = 1; g.beginPath(); g.moveTo(lx - 12, ly); g.lineTo(lx + 12, ly); g.stroke(); }
+    // galley under sail
+    ship.x -= dt * (6 + boost * 24); if (ship.x < -80) ship.x = W + 80;
+    var s = U / 520, hx = ship.x, hy = SEA + H * 0.045 + Math.sin(T * 1.2) * 1.2;
+    g.fillStyle = rgb(P.hull); g.beginPath(); g.moveTo(hx - 30 * s, hy); g.quadraticCurveTo(hx, hy + 9 * s, hx + 30 * s, hy); g.lineTo(hx + 36 * s, hy - 8 * s); g.lineTo(hx + 28 * s, hy - 3 * s); g.lineTo(hx - 28 * s, hy - 3 * s); g.lineTo(hx - 34 * s, hy - 9 * s); g.fill();
+    g.fillRect(hx - 1 * s, hy - 34 * s, 2 * s, 32 * s);
+    g.fillStyle = P.sail; g.beginPath(); g.moveTo(hx - 17 * s, hy - 32 * s); g.lineTo(hx + 17 * s, hy - 32 * s); g.quadraticCurveTo(hx + 12 * s, hy - 20 * s, hx + 16 * s, hy - 9 * s); g.lineTo(hx - 16 * s, hy - 9 * s); g.quadraticCurveTo(hx - 21 * s, hy - 20 * s, hx - 17 * s, hy - 32 * s); g.fill();
+    // the acropolis: a tall rock with the temple on its summit, clear of the title
+    var tb = H * 0.25, tw = Math.min(W * 0.46, H * 0.22), px0 = W * 0.03, px1 = px0 + tw * 1.25;
+    g.fillStyle = rgb(P.rock); g.beginPath(); g.moveTo(-10, H); g.lineTo(-10, tb + H * 0.02); g.lineTo(px0, tb); g.lineTo(px1, tb);
+    g.bezierCurveTo(px1 + W * 0.06, tb + H * 0.1, px1 + W * 0.1, tb + H * 0.26, px1 + W * 0.2, SEA + H * 0.04); g.lineTo(px1 + W * 0.26, H); g.fill();
+    g.fillStyle = rgb(P.rockSh); g.beginPath(); g.moveTo(px1 - tw * 0.3, tb); g.lineTo(px1, tb);
+    g.bezierCurveTo(px1 + W * 0.06, tb + H * 0.1, px1 + W * 0.1, tb + H * 0.26, px1 + W * 0.2, SEA + H * 0.04); g.lineTo(px1 + W * 0.02, SEA + H * 0.04); g.bezierCurveTo(px1 - W * 0.02, tb + H * 0.24, px1 - tw * 0.2, tb + H * 0.1, px1 - tw * 0.3, tb); g.fill();
+    temple(g, px0 + tw * 0.6, tb, tw, P);
+    // green hills, aqueduct (right), trees
+    g.fillStyle = rgb(P.hill); g.beginPath(); g.moveTo(0, H); g.lineTo(0, SEA + H * 0.1); for (x = 0; x <= W; x += 10) g.lineTo(x, SEA + H * 0.105 + Math.sin(x / W * 4 + 0.6) * H * 0.02 - (x / W) * H * 0.03); g.lineTo(W, H); g.fill();
+    if (!layer || layer.width !== cv.width || layer.height !== cv.height){ layer = document.createElement('canvas'); layer.width = cv.width; layer.height = cv.height; }
+    var lg = layer.getContext('2d'); lg.setTransform(DPR, 0, 0, DPR, 0, 0); lg.clearRect(0, 0, W, H);
+    aqueduct(lg, W * 0.56, W * 1.02, SEA + H * 0.0, SEA + H * 0.11, P);
+    g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(layer, 0, 0); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    g.fillStyle = rgb(P.near); g.beginPath(); g.moveTo(0, H); for (x = 0; x <= W; x += 10) g.lineTo(x, H * 0.82 + Math.sin(x / W * 3 + 2) * H * 0.02); g.lineTo(W, H); g.fill();
+    for (i = 0; i < cyp.length; i++){ var c = cyp[i], gy = H * 0.84 + Math.sin(c.x / W * 3 + 2) * H * 0.02; if (c.o) olive(g, c.x, gy, c.s * 1.3, P.olive, P.tree); else cypress(g, c.x, gy, c.s * 1.2, P.tree); }
+    // gulls
+    g.strokeStyle = rgb(P.tree, 0.8); g.lineWidth = 1.4;
+    for (i = 0; i < gulls.length; i++){ var b = gulls[i]; b.x += b.v * dt; if (b.x > W + 20) b.x = -20; var by = b.y + Math.sin(T * 0.7 + b.p) * 8, f = Math.sin(T * 5 + b.p) * 2.5;
+      g.beginPath(); g.moveTo(b.x - 6, by - f); g.quadraticCurveTo(b.x - 2, by - 2, b.x, by); g.quadraticCurveTo(b.x + 2, by - 2, b.x + 6, by - f); g.stroke(); }
+  }
+  function frame(now){
+    raf = 0; if (!running) return;
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now; T += dt; boost *= .96; frames++;
+    draw(dt); raf = requestAnimationFrame(frame);
+  }
+  function start(){ running = true; if (!raf && !document.hidden){ last = 0; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+  function resize(){ W = window.innerWidth; H = window.innerHeight; build(); draw(0); }
+  function init(){
+    if (window.__hvLib3D) return;
+    cv = document.createElement('canvas'); cv.id = ID; cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;display:block';
+    cx = cv.getContext('2d', { alpha: false });
+    if (!cx) return;
+    document.body.insertBefore(cv, document.body.firstChild);
+    veil = document.getElementById('hv-lib3d-veil');
+    if (!veil){ veil = document.createElement('div'); veil.id = 'hv-lib3d-veil'; veil.setAttribute('aria-hidden', 'true'); document.body.insertBefore(veil, cv.nextSibling); }
+    W = window.innerWidth; H = window.innerHeight; build(); draw(0);
+    var rz = 0; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(resize, 160); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = 0; } } else if (running) start(); });
+    try { new MutationObserver(function(){ if (theme() !== curTheme){ build(); draw(0); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    document.documentElement.classList.remove('hv-lib3d-off'); document.documentElement.classList.add('hv-lib3d-on');
+    window.__hvLib3D = { canvas: cv, gl: null, scrolls: 0, stop: stop, start: start, boost: function(){ boost = 1; },
+      _q: function(){ return { running: running, frames: frames, theme: curTheme, w: W, h: H }; }, _setShot: function(){} };
+    start(); scope();
+  }
+  function isReading(){
+    try {
+      var r = document.querySelector('[data-view]'), v = r ? r.getAttribute('data-view') : null;
+      if (v === 'article' || v === 'dict' || document.documentElement.classList.contains('hv-conc-open')) return true;
+      var u = document.getElementById('reader-view'); if (u && u.classList.contains('open')) return true;
+    } catch (e) {}
+    return false;
+  }
+  var was = null;
+  function sync(){
+    var r = isReading(); if (r === was) return; was = r; var d = document.documentElement;
+    if (r){ d.classList.add('hv-reading'); d.classList.remove('hv-lib3d-on'); stop(); }
+    else { d.classList.remove('hv-reading'); d.classList.add('hv-lib3d-on'); start(); }
+  }
+  function watch(){
+    var r = document.querySelector('[data-view]');
+    if (r && !r.__hvScopeObs){ r.__hvScopeObs = new MutationObserver(sync); r.__hvScopeObs.observe(r, { attributes: true, attributeFilter: ['data-view'] }); }
+    var v = document.getElementById('reader-view');
+    if (v && !v.__hvScopeObs){ v.__hvScopeObs = new MutationObserver(sync); v.__hvScopeObs.observe(v, { attributes: true, attributeFilter: ['class'] }); }
+  }
+  function scope(){
+    window.addEventListener('hashchange', function(){ watch(); sync(); }); window.addEventListener('popstate', function(){ watch(); sync(); });
+    watch(); sync(); setTimeout(function(){ watch(); sync(); }, 700); setTimeout(function(){ watch(); sync(); }, 2500);
+  }
+  function enabled(){ try { return localStorage.getItem('hermes_lib3d') !== 'off' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return true; } }
+  function boot(){ if (enabled()) init(); else document.documentElement.classList.add('hv-lib3d-off'); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.hvSetLib3D = function(on){
+    try { localStorage.setItem('hermes_lib3d', on ? 'on' : 'off'); } catch (e) {}
+    var d = document.documentElement;
+    if (on){ if (window.__hvLib3D){ d.classList.remove('hv-lib3d-off'); d.classList.add('hv-lib3d-on'); cv.style.display = 'block'; start(); } else init(); }
+    else { stop(); if (cv) cv.style.display = 'none'; d.classList.remove('hv-lib3d-on'); d.classList.add('hv-lib3d-off'); }
+    return !!on;
+  };
+  window.hvLib3DEnabled = function(){ try { return localStorage.getItem('hermes_lib3d') !== 'off'; } catch (e) { return false; } };
+})();

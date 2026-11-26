@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.keystore
+*.jks
+*password*
+out/
+.DS_Store

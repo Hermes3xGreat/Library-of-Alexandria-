@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a142c">
+<title>The Library of Alexandria</title>
+<link rel="icon" href="data:image/png;base64,{{icon}}">
+<style>
+:root{--gold:#f4cd78;--ink:#f3ead6;--mute:#b9b3a2}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:#0a142c;color:var(--ink);font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;-webkit-font-smoothing:antialiased}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 34px) 16px 96px}
+header{text-align:center;padding:0 6px 8px}
+header img{width:92px;height:92px;border-radius:22px;box-shadow:0 0 0 1.5px rgba(244,205,120,.7),0 0 34px rgba(244,205,120,.35)}
+h1{font-weight:600;letter-spacing:.2em;text-transform:uppercase;font-size:clamp(22px,6.4vw,38px);margin:20px 0 6px;line-height:1.2;text-wrap:balance}
+.rule{width:150px;height:5px;margin:14px auto;border-top:1px solid var(--gold);border-bottom:1px solid rgba(244,205,120,.5)}
+header p{margin:0;font-style:italic;color:var(--mute);font-size:16px}
+.find{position:relative;max-width:560px;margin:22px auto 0}
+.find input{width:100%;padding:13px 44px 13px 44px;border-radius:999px;border:1px solid rgba(244,205,120,.5);background:rgba(10,20,44,.72);color:var(--ink);font:italic 16px Georgia,serif;outline:none}
+#deep{display:block;width:100%;margin:14px 0 6px;padding:13px 14px;border-radius:13px;border:1px solid rgba(244,205,120,.55);background:rgba(244,205,120,.12);color:var(--gold);font:600 14px/1.3 system-ui,sans-serif;cursor:pointer}
+#deep:hover,#deep:focus-visible{background:rgba(244,205,120,.22);outline:none}#deep[disabled]{opacity:.55;cursor:default}
+#deepout .bar{height:5px;border-radius:3px;background:rgba(244,205,120,.18);overflow:hidden;margin:10px 2px 6px}#deepout .bar i{display:block;height:100%;width:0;background:var(--gold)}
+#deepout .st{display:flex;justify-content:space-between;align-items:center;gap:10px;font:12.5px/1.3 system-ui,sans-serif;color:#cfc8b6;margin:0 2px 12px}#deepout .st button{border:1px solid rgba(244,205,120,.4);background:none;color:var(--gold);border-radius:999px;padding:5px 12px;font:600 12px system-ui,sans-serif;cursor:pointer}
+.pas{display:block;padding:11px 13px;border-radius:13px;text-decoration:none;color:inherit;background:rgba(13,23,48,.86);border:1px solid rgba(244,205,120,.2);margin-bottom:8px}.pas:hover,.pas:focus-visible{border-color:var(--gold);outline:none}
+.pas b{display:block;font-size:15px;font-weight:600}.pas small{display:block;font:italic 12.5px/1.3 Georgia,serif;color:#cfc8b6;margin:2px 0 6px}.pas p{margin:0;font:14px/1.5 Georgia,serif;color:#e9e3d2}.pas mark{background:rgba(244,205,120,.32);color:#fff;border-radius:3px;padding:0 2px}
+#welcome{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(6,10,22,.72);padding:20px}#welcome.on{display:flex}
+#welcome .card{max-width:420px;width:100%;background:#f6efdd;color:#22252c;border-radius:16px;border:1px solid rgba(168,120,0,.45);padding:22px 22px 18px;box-shadow:0 18px 50px rgba(0,0,0,.5);max-height:86vh;overflow:auto}
+#welcome h2{margin:0 0 4px;font:700 22px/1.2 Georgia,serif;color:#14264a;letter-spacing:0;text-transform:none}#welcome .sub{margin:0 0 14px;font:italic 15px/1.4 Georgia,serif;color:#5a5446}
+#welcome dl{margin:0}#welcome dt{font:700 15px/1.3 Georgia,serif;margin-top:10px}#welcome dd{margin:2px 0 0;font:15px/1.45 Georgia,serif}
+#welcome button{margin-top:18px;width:100%;padding:13px;border:0;border-radius:11px;background:#14264a;color:#fff;font:600 16px Georgia,serif;cursor:pointer}
+.find input::-webkit-search-cancel-button{display:none;-webkit-appearance:none}.find input::placeholder{color:#9d977f}.find input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(244,205,120,.18)}
+.find svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--gold)}
+.find button{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;border:0;background:rgba(244,205,120,.16);color:var(--gold);font-size:17px;line-height:1;display:none;cursor:pointer}
+#hits{margin-top:18px;display:none}#hits .n{font:600 11px/1 system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 4px 10px}
+.hit{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:13px;text-decoration:none;color:inherit;background:rgba(13,23,48,.86);border:1px solid rgba(244,205,120,.2);margin-bottom:8px}
+.hit:hover,.hit:focus-visible{border-color:var(--gold);outline:none}.hit i{flex:none;width:9px;height:34px;border-radius:5px;background:var(--c);box-shadow:0 0 0 1px rgba(244,205,120,.35)}
+.hit span{display:flex;flex-direction:column;gap:3px;min-width:0}.hit b{font-size:16px;font-weight:600}.hit small{font:13px/1.3 Georgia,serif;font-style:italic;color:#cfc8b6}
+.hit em{margin-left:auto;flex:none;font:600 10.5px/1 system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-align:right;max-width:34%}
+.none{text-align:center;color:var(--mute);font-style:italic;padding:18px}
+body.searching #wings{display:none}body.searching #hits{display:block}
+section{margin-top:30px}
+h2{display:flex;align-items:center;gap:12px;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 2px 12px}
+h2:before,h2:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(244,205,120,.5))}h2:after{transform:scaleX(-1)}
+.doors{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.door{display:flex;gap:14px;align-items:center;padding:14px;border-radius:16px;text-decoration:none;color:inherit;background:linear-gradient(135deg,color-mix(in srgb,var(--c) 46%,#0d1730),rgba(13,23,48,.86));border:1px solid rgba(244,205,120,.28);box-shadow:0 6px 18px rgba(0,0,0,.3);transition:transform .15s,border-color .15s}
+.door:active{transform:scale(.985)}.door:hover,.door:focus-visible{border-color:var(--gold);outline:none}
+.door img{flex:none;border-radius:15px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.tx{display:flex;flex-direction:column;gap:4px;min-width:0}
+.tx b{font-size:17.5px;letter-spacing:.06em;font-weight:600}
+.tx i{font-size:13.5px;line-height:1.35;color:#d8d1bf}
+.tx em{font-style:normal;font:600 11px/1 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-top:2px}
+footer{text-align:center;color:var(--mute);font-size:12.5px;margin-top:36px;font-style:italic}
+@media (prefers-reduced-motion:reduce){.door{transition:none}}
+</style></head><body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<main>
+<header><img src="data:image/png;base64,{{icon}}" alt="">
+<h1>The Library of Alexandria</h1><div class="rule"></div>
+<p>{{count}} libraries · {{total}} works · fully offline</p>
+<div class="find" role="search"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.500 16.500L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+<input id="q" type="search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Find a work or author in any library…" aria-label="Find a work or author in any library"><button id="qx" type="button" aria-label="Clear search">×</button></div></header>
+<div id="hits" aria-live="polite"></div>
+<div id="wings">
+{{wings}}
+</div>
+<footer>Choose a library to enter. Each keeps its own bookmarks, notes and reading place.<br>Version {{version}}</footer>
+</main>
+<script id="catalog" type="application/json">{{catalog}}</script>
+<script>
+(function(){var C=JSON.parse(document.getElementById('catalog').textContent),q=document.getElementById('q'),x=document.getElementById('qx'),box=document.getElementById('hits');
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’'`]/g,'');}
+var idx=C.works.map(function(w){return norm(w[0]+' '+w[1]);});
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function run(){var v=norm(q.value).trim();x.style.display=q.value?'block':'none';if(v.length<2){document.body.classList.remove('searching');box.innerHTML='';return;}
+var words=v.split(/\s+/),out=[];for(var i=0;i<idx.length;i++){var ok=true;for(var j=0;j<words.length;j++)if(idx[i].indexOf(words[j])<0){ok=false;break;}if(ok){var w=C.works[i],t=norm(w[0]);out.push([t.indexOf(words[0])===0?0:(t.indexOf(words[0])>=0?1:2),i]);}}
+out.sort(function(a,b){return a[0]-b[0]||a[1]-b[1];});var n=out.length,h='<div class="n">'+(n?n+(n===1?' work':' works')+' found':'')+'</div>';
+if(!n)h+='<div class="none">No title or author matches “'+esc(q.value)+'”.</div>';
+out.slice(0,60).forEach(function(o){var w=C.works[o[1]],m=C.mods[w[3]];h+='<a class="hit" style="--c:'+m[2]+'" href="modules/'+m[0]+'/index.html#/read/'+encodeURIComponent(w[2])+'"><i></i><span><b>'+esc(w[0])+'</b><small>'+esc(w[1])+'</small></span><em>'+esc(m[1].replace(' Scroll',''))+'</em></a>';});
+if(n>60)h+='<div class="none">Showing the first 60. Add another word to narrow it down.</div>';h+='<button id="deep" type="button">Search inside every book for “'+esc(q.value.trim())+'”</button><div id="deepout"></div>';box.innerHTML=h;document.body.classList.add('searching');if(window.alxDeepReset)window.alxDeepReset();}
+q.addEventListener('input',run);x.addEventListener('click',function(){q.value='';run();q.focus();});try{var keep=sessionStorage.getItem('alx:q');if(keep){q.value=keep;run();}q.addEventListener('input',function(){sessionStorage.setItem('alx:q',q.value);});x.addEventListener('click',function(){sessionStorage.removeItem('alx:q');});}catch(e){}})();
+</script>
+<script>
+(function(){var cv=document.getElementById('sky'),g=cv.getContext('2d'),W=0,H=0,D=1,T=0,last=0,stars=[],still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function size(){D=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;g.setTransform(D,0,0,D,0,0);stars=[];var s=7;function r(){s=(s*16807)%2147483647;return s/2147483647;}for(var i=0;i<Math.min(260,W*H/2600);i++)stars.push([r()*W,r()*H*.8,r()*1.3+.3,r()*6.28]);}
+function draw(){var sky=g.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#050a1a');sky.addColorStop(.7,'#0f1d40');sky.addColorStop(1,'#1b2f5c');g.fillStyle=sky;g.fillRect(0,0,W,H);
+for(var i=0;i<stars.length;i++){var s=stars[i];g.fillStyle='rgba(240,238,255,'+(.25+.45*(.5+.5*Math.sin(T*1.1+s[3])))+')';g.fillRect(s[0],s[1],s[2],s[2]);}
+var U=Math.min(W,H),lx=W*.84,base=H*.9,h=U*.34,fy=base-h;
+// the sweeping beam
+var a=Math.sin(T*.35)*.9;g.save();g.translate(lx,fy);for(var k=-1;k<=1;k+=2){g.save();g.rotate(k>0?a*.25-.12:Math.PI-a*.25+.12);var bg=g.createLinearGradient(0,0,Math.max(W,H),0);bg.addColorStop(0,'rgba(244,205,120,.34)');bg.addColorStop(1,'rgba(244,205,120,0)');g.fillStyle=bg;g.beginPath();g.moveTo(0,0);g.lineTo(Math.max(W,H),-U*.16);g.lineTo(Math.max(W,H),U*.1);g.fill();g.restore();}g.restore();
+// sea
+g.fillStyle='#0c1c3e';g.fillRect(0,base,W,H-base);g.strokeStyle='rgba(150,180,220,.22)';g.lineWidth=1;for(i=0;i<14;i++){var y=base+6+(i*37%100)/100*(H-base-10),x=(i*131+T*10)%(W+80)-40;g.beginPath();g.moveTo(x,y);g.lineTo(x+22,y);g.stroke();}
+// the Pharos
+g.fillStyle='#2a2f44';g.beginPath();g.moveTo(lx-h*.34,base+2);g.lineTo(lx-h*.24,base-h*.05);g.lineTo(lx+h*.24,base-h*.05);g.lineTo(lx+h*.34,base+2);g.fill();
+function tier(w0,w1,y0,y1){g.fillStyle='#cfc6b0';g.beginPath();g.moveTo(lx-w0,y0);g.lineTo(lx-w1,y1);g.lineTo(lx+w1,y1);g.lineTo(lx+w0,y0);g.fill();g.fillStyle='rgba(60,60,80,.35)';g.beginPath();g.moveTo(lx,y0);g.lineTo(lx,y1);g.lineTo(lx+w1,y1);g.lineTo(lx+w0,y0);g.fill();}
+tier(h*.17,h*.14,base-h*.05,base-h*.52);g.fillStyle='#cfc6b0';g.fillRect(lx-h*.18,base-h*.54,h*.36,h*.03);tier(h*.105,h*.085,base-h*.54,base-h*.78);g.fillStyle='#cfc6b0';g.fillRect(lx-h*.115,base-h*.8,h*.23,h*.025);tier(h*.05,h*.05,base-h*.8,base-h*.9);
+var gl=g.createRadialGradient(lx,fy,0,lx,fy,h*.3);gl.addColorStop(0,'rgba(255,236,170,.95)');gl.addColorStop(.25,'rgba(244,205,120,.5)');gl.addColorStop(1,'rgba(244,205,120,0)');g.fillStyle=gl;g.fillRect(lx-h*.3,fy-h*.3,h*.6,h*.6);
+g.fillStyle='#cfc6b0';g.beginPath();g.moveTo(lx-h*.07,fy-h*.03);g.lineTo(lx,fy-h*.1);g.lineTo(lx+h*.07,fy-h*.03);g.fill();}
+function frame(t){var dt=last?Math.min(.05,(t-last)/1000):0;last=t;T+=dt;draw();if(!still)requestAnimationFrame(frame);}
+size();addEventListener('resize',function(){size();draw();});requestAnimationFrame(frame);})();
+</script>
+<div id="welcome" role="dialog" aria-modal="true" aria-labelledby="wt"><div class="card"><h2 id="wt">Welcome to the Library of Alexandria</h2><p class="sub">{{count}} libraries and {{total}} works, all on this device. A few things worth knowing:</p>
+<dl><dt>Libraries</dt><dd>Each door opens a library of its own. The Alexandria button at the bottom left of a library brings you back here.</dd>
+<dt>Search</dt><dd>The search box finds a title or author in any library. You can then search inside every book for a word or phrase.</dd>
+<dt>Versions</dt><dd>Where a work has a second translation or its original text, a switch at the top of the page changes between them.</dd>
+<dt>Saved</dt><dd>Highlight a passage to keep it, add a note, or bookmark your place. Each library keeps its own.</dd></dl>
+<button id="wgo" type="button">Enter the library</button></div></div>
+<script>
+(function(){var w=document.getElementById('welcome');try{if(!localStorage.getItem('alx:welcomed'))w.classList.add('on');}catch(e){}
+function close(){w.classList.remove('on');try{localStorage.setItem('alx:welcomed','1');}catch(e){}}
+document.getElementById('wgo').addEventListener('click',close);w.addEventListener('click',function(e){if(e.target===w)close();});document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();
+(function(){var C=JSON.parse(document.getElementById('catalog').textContent),run=0;
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’‘`]/g,"'").replace(/[“”]/g,'"');}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function plain(t){return String(t||'').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/\s+/g,' ');}
+window.alxDeepReset=function(){run++;};
+function load(mod,key,done){var s=document.createElement('script'),fin=false,to;function end(a){if(fin)return;fin=true;clearTimeout(to);window.__hermes_register_book=null;s.remove();done(a);}
+window.__hermes_register_book=function(k,a){end(a||[]);};s.onerror=function(){end(null);};s.onload=function(){setTimeout(function(){end(null);},0);};to=setTimeout(function(){end(null);},20000);
+s.src='modules/'+mod+'/books/'+encodeURIComponent(key)+'.js';document.head.appendChild(s);}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#deep');if(!b||b.disabled)return;var raw=document.getElementById('q').value.trim(),needle=norm(raw).replace(/\s+/g,' ');if(needle.length<3)return;
+var out=document.getElementById('deepout'),me=++run,i=0,found=0,books=0,W=C.works,CAP=300;b.disabled=true;
+out.innerHTML='<div class="bar"><i></i></div><div class="st"><span></span><button type="button">Stop</button></div><div class="list"></div>';
+var bar=out.querySelector('.bar i'),st=out.querySelector('.st span'),list=out.querySelector('.list'),stop=out.querySelector('.st button');stop.addEventListener('click',function(){run++;finish(true);});
+function finish(stopped){b.disabled=false;stop.style.display='none';st.textContent=(found?found+(found===1?' passage':' passages')+' in '+books+(books===1?' book':' books'):'No passage found')+(stopped?' (stopped at '+i+' of '+W.length+' books)':found>=CAP?' (first '+CAP+' shown; add a word to narrow it)':'')+'.';bar.style.width='100%';}
+function next(){if(me!==run)return;if(i>=W.length||found>=CAP){finish(false);return;}var w=W[i++],m=C.mods[w[3]];bar.style.width=(100*i/W.length).toFixed(1)+'%';st.textContent='Searching '+i+' of '+W.length+' books… '+found+' found';
+load(m[0],w[2],function(a){if(me!==run)return;if(a){var n=0,h='';for(var j=0;j<a.length&&n<3;j++){var x=a[j];if(!x||typeof x.t!=='string'||x.sp==='HDR')continue;var t=plain(x.t),p=norm(t).indexOf(needle);if(p<0)continue;
+var from=Math.max(0,p-90),to=Math.min(t.length,p+needle.length+130),sn=(from?'…':'')+esc(t.slice(from,p))+'<mark>'+esc(t.slice(p,p+needle.length))+'</mark>'+esc(t.slice(p+needle.length,to))+(to<t.length?'…':'');
+h+='<a class="pas" href="modules/'+m[0]+'/index.html#/read/'+encodeURIComponent(w[2])+'/p'+j+'"><b>'+esc(w[0])+'</b><small>'+esc(w[1]?w[1]+' · ':'')+esc(m[1])+(x.st&&x.st!=='—'?' · '+esc(String(x.st)):'')+'</small><p>'+sn+'</p></a>';n++;}
+if(n){found+=n;books++;list.insertAdjacentHTML('beforeend',h);}}setTimeout(next,0);});}
+next();});})();
+</script></body></html>

@@ -1,0 +1,208 @@
+/* Northern Scroll — animated background: a fjord in the North. Snow-capped
+   mountains, a castle on its crag with lit windows, dark pines, a longship
+   under a striped sail, ravens, falling snow; the low northern sun by day,
+   the aurora and the stars by night. Same window.__hvLib3D / hvSetLib3D interface. */
+(function(){
+  if (window.__hvLib3D) return;
+  var ID = 'hv-lib3d';
+  var PAL = {
+    light: { sky:['#dfe8ec','#cfdde2','#e8dcc4'], disc:'#f2c27a', glow:'250,215,150', far:[150,170,182], mid:[104,128,140], near:[58,78,82], snow:[246,248,250], water:[96,128,140], waterHi:'255,250,235', pine:[36,58,52], castle:[70,80,90], win:'rgba(255,214,140,0)', ship:[70,50,36], sail:['#b33a2e','#efe6d2'], bird:'rgba(30,34,38,.7)', flake:'255,255,255', aurora:0 },
+    sepia: { sky:['#e6ddc8','#ddd0b2','#d8c09a'], disc:'#e2a85e', glow:'230,190,130', far:[160,152,136], mid:[122,112,96], near:[74,66,54], snow:[244,238,224], water:[120,124,116], waterHi:'250,238,210', pine:[56,58,44], castle:[86,78,66], win:'rgba(255,200,120,0)', ship:[74,54,38], sail:['#a8432f','#ece0c8'], bird:'rgba(48,40,30,.65)', flake:'250,245,235', aurora:0 },
+    dark:  { sky:['#04070f','#0a1426','#14243a'], disc:'#e8ecf4', glow:'190,210,240', far:[40,54,70], mid:[26,38,52], near:[12,20,28], snow:[150,170,190], water:[16,30,46], waterHi:'170,230,210', pine:[6,12,14], castle:[18,24,32], win:'rgba(255,200,110,.95)', ship:[10,12,16], sail:['#5a2a28','#7a7a80'], bird:'rgba(190,200,220,.35)', flake:'220,230,245', aurora:1 }
+  };
+  function theme(){ var t = document.documentElement.getAttribute('data-theme'); return (t === 'dark' || t === 'sepia') ? t : 'light'; }
+  function rnd(seed){ var s = seed >>> 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function rgb(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+  var cv, cx, veil, W = 0, H = 0, DPR = 1, running = false, raf = 0, last = 0, T = 0, boost = 0, curTheme = '', frames = 0;
+  var stars = [], flakes = [], birds = [], pines = [], ridges = [], ship = { x: 0 }, WL = 0;
+
+  function ridge(seed, base, amp, sharp){
+    var r = rnd(seed), k = [], i; for (i = 1; i <= 6; i++) k.push({ f: i * (0.7 + r() * 0.9), a: amp / Math.pow(i, sharp) * (0.6 + r() * 0.8), p: r() * 6.283 });
+    return function(x){ var y = 0; for (var j = 0; j < k.length; j++) y += Math.abs(Math.sin(x / W * 6.283 * k[j].f * 0.5 + k[j].p)) * k[j].a; return base - y; };
+  }
+  function build(){
+    curTheme = theme();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    WL = H * 0.68;
+    var r = rnd(793), i;
+    stars = []; for (i = 0; i < Math.min(240, W * H / 2200); i++) stars.push({ x: r() * W, y: r() * WL * 0.8, s: r() * 1.4 + 0.3, p: r() * 6.283 });
+    flakes = []; for (i = 0; i < Math.min(110, W * H / 7000); i++) flakes.push({ x: r() * W, y: r() * H, v: 12 + r() * 22, s: 0.6 + r() * 1.8, p: r() * 6.283 });
+    birds = []; for (i = 0; i < 3; i++) birds.push({ x: r() * W, y: H * (0.14 + r() * 0.2), v: 16 + r() * 10, s: 0.9 + r() * 0.5, p: r() * 6.283 });
+    pines = []; for (i = 0; i < Math.round(W / 9); i++) pines.push({ x: r() * W, h: H * (0.035 + r() * 0.05), side: r() < 0.5 ? 0 : 1 });
+    pines.sort(function(a, b){ return a.h - b.h; });
+    ridges = [ridge(5, WL - H * 0.05, H * 0.28, 1.3), ridge(17, WL - H * 0.01, H * 0.16, 1.1)];
+    ship.x = W * 0.2;
+  }
+  function aurora(g){
+    for (var band = 0; band < 3; band++){
+      g.beginPath();
+      var base = H * (0.16 + band * 0.07);
+      for (var x = 0; x <= W; x += 12){
+        var y = base + Math.sin(x / W * 5 + T * 0.25 + band) * H * 0.04 + Math.sin(x / W * 13 - T * 0.4) * H * 0.012;
+        if (x === 0) g.moveTo(x, y); else g.lineTo(x, y);
+      }
+      g.lineWidth = H * 0.05; g.lineCap = 'round';
+      var a = 0.10 + 0.06 * Math.sin(T * 0.5 + band * 2);
+      g.strokeStyle = band === 1 ? 'rgba(140,110,220,' + a * 0.8 + ')' : 'rgba(80,230,170,' + a + ')';
+      g.stroke();
+    }
+  }
+  function castle(g, x, y, s, P){
+    g.fillStyle = rgb(P.castle);
+    g.fillRect(x - 40 * s, y - 34 * s, 80 * s, 34 * s);                  // curtain wall
+    g.fillRect(x - 52 * s, y - 64 * s, 20 * s, 64 * s);                  // towers
+    g.fillRect(x + 30 * s, y - 56 * s, 18 * s, 56 * s);
+    g.fillRect(x - 8 * s, y - 84 * s, 22 * s, 84 * s);                   // keep
+    function roof(rx, rw, top){ g.beginPath(); g.moveTo(rx - 2 * s, top); g.lineTo(rx + rw / 2, top - rw * 1.1); g.lineTo(rx + rw + 2 * s, top); g.closePath(); g.fill(); }
+    roof(x - 52 * s, 20 * s, y - 64 * s); roof(x + 30 * s, 18 * s, y - 56 * s); roof(x - 8 * s, 22 * s, y - 84 * s);
+    for (var i = 0; i < 7; i++) g.fillRect(x - 40 * s + i * 12 * s, y - 39 * s, 6 * s, 5 * s);   // battlements
+    g.fillStyle = P.win;
+    var flick = 0.8 + 0.2 * Math.sin(T * 3);
+    g.globalAlpha = flick;
+    [[-45, -50], [-45, -36], [36, -42], [-1, -70], [-1, -54], [6, -54], [-20, -18], [14, -18]].forEach(function(w){ g.fillRect(x + w[0] * s, y + w[1] * s, 4 * s, 6 * s); });
+    g.globalAlpha = 1;
+  }
+  function pine(g, x, y, h, col){
+    g.fillStyle = rgb(col);
+    for (var i = 0; i < 3; i++){
+      var w = h * (0.42 - i * 0.1), top = y - h * (0.35 + i * 0.3);
+      g.beginPath(); g.moveTo(x - w, y - h * i * 0.28); g.lineTo(x, top - h * 0.12); g.lineTo(x + w, y - h * i * 0.28); g.closePath(); g.fill();
+    }
+    g.fillRect(x - h * 0.03, y - h * 0.1, h * 0.06, h * 0.12);
+  }
+  function draw(dt){
+    var P = PAL[curTheme], g = cx, i, x;
+    var sky = g.createLinearGradient(0, 0, 0, WL);
+    sky.addColorStop(0, P.sky[0]); sky.addColorStop(0.6, P.sky[1]); sky.addColorStop(1, P.sky[2]);
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    if (P.aurora){
+      for (i = 0; i < stars.length; i++){ var st = stars[i]; g.fillStyle = 'rgba(235,240,255,' + (0.3 + 0.5 * (0.5 + 0.5 * Math.sin(T * 1.1 + st.p))) + ')'; g.fillRect(st.x, st.y, st.s, st.s); }
+      aurora(g);
+    }
+    var sx = W * 0.24, sy = H * 0.22, sr = Math.min(W, H) * 0.045;
+    var gl = g.createRadialGradient(sx, sy, 0, sx, sy, sr * 6);
+    gl.addColorStop(0, 'rgba(' + P.glow + ',.5)'); gl.addColorStop(1, 'rgba(' + P.glow + ',0)');
+    g.fillStyle = gl; g.fillRect(sx - sr * 6, sy - sr * 6, sr * 12, sr * 12);
+    g.fillStyle = P.disc; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill();
+    // far mountains with snowcaps
+    var f0 = ridges[0];
+    g.fillStyle = rgb(P.far); g.beginPath(); g.moveTo(0, WL); for (x = 0; x <= W; x += 6) g.lineTo(x, f0(x)); g.lineTo(W, WL); g.fill();
+    g.save(); g.beginPath(); g.moveTo(0, WL); for (x = 0; x <= W; x += 6) g.lineTo(x, f0(x)); g.lineTo(W, WL); g.closePath(); g.clip();
+    var snowLine = WL - H * 0.27, sg = g.createLinearGradient(0, snowLine - H * 0.1, 0, snowLine + H * 0.06); sg.addColorStop(0, rgb(P.snow, 0.85)); sg.addColorStop(1, rgb(P.snow, 0)); g.fillStyle = sg; g.fillRect(0, 0, W, snowLine + H * 0.06); g.restore();
+    // nearer ridge with the castle on its crag
+    var f1 = ridges[1];
+    g.fillStyle = rgb(P.mid); g.beginPath(); g.moveTo(0, WL); for (x = 0; x <= W; x += 6) g.lineTo(x, f1(x)); g.lineTo(W, WL); g.fill();
+    // pines along the shore
+    for (i = 0; i < pines.length; i++){ var pn = pines[i]; pine(g, pn.x, WL - 1, pn.h, P.pine); }
+    // the castle stands on its own rocky crag at the water's edge, right of the title
+    var cs = Math.min(0.9, Math.max(0.55, Math.min(W, H) * 0.0018)),
+        cxp = W - Math.max(70 * cs, W * 0.14), cyp = WL - H * 0.065;
+    var cw = 70 * cs;                                   // half-width of the crag top
+    g.fillStyle = rgb(P.near);
+    g.beginPath();
+    g.moveTo(cxp - cw * 2.2, WL + 2);
+    g.lineTo(cxp - cw * 1.5, WL - H * 0.02);
+    g.lineTo(cxp - cw * 1.15, cyp + H * 0.012);
+    g.lineTo(cxp - cw * 0.95, cyp);                     // flat top the walls sit on
+    g.lineTo(cxp + cw * 0.95, cyp);
+    g.lineTo(cxp + cw * 1.2, cyp + H * 0.018);
+    g.lineTo(cxp + cw * 1.7, WL - H * 0.015);
+    g.lineTo(cxp + cw * 2.4, WL + 2);
+    g.closePath(); g.fill();
+    castle(g, cxp, cyp + 1, cs, P);
+    for (i = 0; i < 3; i++) pine(g, cxp - cw * (1.55 - i * 0.22), WL - H * 0.012 * (1 - i * 0.2), H * (0.03 + i * 0.006), P.pine);
+    // the fjord
+    var wv = g.createLinearGradient(0, WL, 0, H); wv.addColorStop(0, rgb(P.water, 0.95)); wv.addColorStop(1, rgb(P.near));
+    g.fillStyle = wv; g.fillRect(0, WL, W, H - WL);
+    for (i = 0; i < 30; i++){
+      var lx = (i * 131 + T * 10) % (W + 80) - 40, ly = WL + 6 + (i * 53 % 100) / 100 * (H - WL) * 0.6;
+      g.strokeStyle = 'rgba(' + P.waterHi + ',' + (0.18 + 0.2 * Math.sin(T * 1.6 + i)) + ')'; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(lx, ly); g.lineTo(lx + 18 + (i % 4) * 7, ly); g.stroke();
+    }
+    // longship
+    ship.x += dt * (8 + boost * 30); if (ship.x > W + 80) ship.x = -80;
+    var bx = ship.x, by = WL + (H - WL) * 0.32 + Math.sin(T * 1.2) * 1.5, s = Math.min(W, H) * 0.0018 + 0.5;
+    g.fillStyle = rgb(P.ship);
+    g.beginPath(); g.moveTo(bx - 36 * s, by - 10 * s); g.quadraticCurveTo(bx - 30 * s, by + 4 * s, bx, by + 4 * s); g.quadraticCurveTo(bx + 30 * s, by + 4 * s, bx + 36 * s, by - 10 * s);
+    g.quadraticCurveTo(bx + 42 * s, by - 20 * s, bx + 38 * s, by - 24 * s); g.lineTo(bx + 34 * s, by - 12 * s); g.lineTo(bx - 34 * s, by - 12 * s); g.lineTo(bx - 38 * s, by - 24 * s); g.quadraticCurveTo(bx - 42 * s, by - 20 * s, bx - 36 * s, by - 10 * s); g.fill();
+    g.fillRect(bx - 1.2 * s, by - 58 * s, 2.4 * s, 48 * s);
+    for (i = 0; i < 5; i++){ g.fillStyle = P.sail[i % 2]; g.fillRect(bx - 20 * s + i * 8 * s, by - 54 * s, 8 * s, 34 * s); }
+    g.fillStyle = rgb(P.ship); for (i = 0; i < 6; i++){ g.beginPath(); g.arc(bx - 25 * s + i * 10 * s, by - 11 * s, 3 * s, 0, 6.283); g.fill(); }
+    // ravens
+    g.strokeStyle = P.bird; g.lineWidth = 2;
+    for (i = 0; i < birds.length; i++){
+      var b = birds[i]; b.x -= b.v * dt; if (b.x < -30) b.x = W + 30;
+      var fl = Math.sin(T * 4 + b.p) * 5 * b.s, byy = b.y + Math.sin(T * 0.6 + b.p) * 8;
+      g.beginPath(); g.moveTo(b.x - 10 * b.s, byy - fl); g.quadraticCurveTo(b.x - 4 * b.s, byy - 3, b.x, byy); g.quadraticCurveTo(b.x + 4 * b.s, byy - 3, b.x + 10 * b.s, byy - fl); g.stroke();
+    }
+    // snow
+    for (i = 0; i < flakes.length; i++){
+      var fk = flakes[i]; fk.y += fk.v * dt; fk.x += Math.sin(T * 0.8 + fk.p) * 0.3; if (fk.y > H + 4){ fk.y = -4; fk.x = Math.random() * W; }
+      g.fillStyle = 'rgba(' + P.flake + ',' + (0.5 + 0.3 * Math.sin(T + fk.p)) + ')';
+      g.beginPath(); g.arc(fk.x, fk.y, fk.s, 0, 6.283); g.fill();
+    }
+  }
+  function frame(now){
+    raf = 0; if (!running) return;
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now; T += dt; boost *= .96; frames++;
+    draw(dt); raf = requestAnimationFrame(frame);
+  }
+  function start(){ running = true; if (!raf && !document.hidden){ last = 0; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+  function resize(){ W = window.innerWidth; H = window.innerHeight; build(); draw(0); }
+  function init(){
+    if (window.__hvLib3D) return;
+    cv = document.createElement('canvas'); cv.id = ID; cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;display:block';
+    cx = cv.getContext('2d', { alpha: false });
+    if (!cx) return;
+    document.body.insertBefore(cv, document.body.firstChild);
+    veil = document.getElementById('hv-lib3d-veil');
+    if (!veil){ veil = document.createElement('div'); veil.id = 'hv-lib3d-veil'; veil.setAttribute('aria-hidden', 'true'); document.body.insertBefore(veil, cv.nextSibling); }
+    W = window.innerWidth; H = window.innerHeight; build(); draw(0);
+    var rz = 0; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(resize, 160); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = 0; } } else if (running) start(); });
+    try { new MutationObserver(function(){ if (theme() !== curTheme){ build(); draw(0); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    document.documentElement.classList.remove('hv-lib3d-off'); document.documentElement.classList.add('hv-lib3d-on');
+    window.__hvLib3D = { canvas: cv, gl: null, scrolls: 0, stop: stop, start: start, boost: function(){ boost = 1; },
+      _q: function(){ return { running: running, frames: frames, theme: curTheme, w: W, h: H }; }, _setShot: function(){} };
+    start(); scope();
+  }
+  function isReading(){
+    try {
+      var r = document.querySelector('[data-view]'), v = r ? r.getAttribute('data-view') : null;
+      if (v === 'article' || v === 'dict' || document.documentElement.classList.contains('hv-conc-open')) return true;
+      var u = document.getElementById('reader-view'); if (u && u.classList.contains('open')) return true;
+    } catch (e) {}
+    return false;
+  }
+  var was = null;
+  function sync(){
+    var r = isReading(); if (r === was) return; was = r; var d = document.documentElement;
+    if (r){ d.classList.add('hv-reading'); d.classList.remove('hv-lib3d-on'); stop(); }
+    else { d.classList.remove('hv-reading'); d.classList.add('hv-lib3d-on'); start(); }
+  }
+  function watch(){
+    var r = document.querySelector('[data-view]');
+    if (r && !r.__hvScopeObs){ r.__hvScopeObs = new MutationObserver(sync); r.__hvScopeObs.observe(r, { attributes: true, attributeFilter: ['data-view'] }); }
+    var v = document.getElementById('reader-view');
+    if (v && !v.__hvScopeObs){ v.__hvScopeObs = new MutationObserver(sync); v.__hvScopeObs.observe(v, { attributes: true, attributeFilter: ['class'] }); }
+  }
+  function scope(){
+    window.addEventListener('hashchange', function(){ watch(); sync(); }); window.addEventListener('popstate', function(){ watch(); sync(); });
+    watch(); sync(); setTimeout(function(){ watch(); sync(); }, 700); setTimeout(function(){ watch(); sync(); }, 2500);
+  }
+  function enabled(){ try { return localStorage.getItem('hermes_lib3d') !== 'off' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return true; } }
+  function boot(){ if (enabled()) init(); else document.documentElement.classList.add('hv-lib3d-off'); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.hvSetLib3D = function(on){
+    try { localStorage.setItem('hermes_lib3d', on ? 'on' : 'off'); } catch (e) {}
+    var d = document.documentElement;
+    if (on){ if (window.__hvLib3D){ d.classList.remove('hv-lib3d-off'); d.classList.add('hv-lib3d-on'); cv.style.display = 'block'; start(); } else init(); }
+    else { stop(); if (cv) cv.style.display = 'none'; d.classList.remove('hv-lib3d-on'); d.classList.add('hv-lib3d-off'); }
+    return !!on;
+  };
+  window.hvLib3DEnabled = function(){ try { return localStorage.getItem('hermes_lib3d') !== 'off'; } catch (e) { return false; } };
+})();

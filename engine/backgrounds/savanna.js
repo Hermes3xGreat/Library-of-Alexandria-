@@ -1,0 +1,157 @@
+/* Africa Scroll — animated background: the savanna at sundown. A great sun
+   over a far blue mountain, flat-topped acacias and a baobab, tall grass
+   moving in the wind, giraffes and elephants crossing in silhouette, birds
+   wheeling; stars and a low moon at night. Same window.__hvLib3D / hvSetLib3D
+   interface. */
+(function(){
+  if (window.__hvLib3D) return;
+  var ID = 'hv-lib3d';
+  var PAL = {
+    light: { sky:['#f6d9a0','#f2b06a','#e2764a'], disc:'#fff1c8', glow:'255,225,160', mtn:[176,128,128], far:[150,104,70], mid:[112,74,44], near:[58,36,22], sil:[40,24,16], grass:[70,44,24], bird:'#3a2216', star:0 },
+    sepia: { sky:['#ecdcb6','#e2c08c','#cf9a68'], disc:'#fff0cc', glow:'250,225,170', mtn:[170,140,120], far:[150,118,84], mid:[116,88,58], near:[66,48,32], sil:[50,36,24], grass:[78,58,36], bird:'#3a2a1c', star:0 },
+    dark:  { sky:['#05060f','#10122a','#2a1c36'], disc:'#f0e8d2', glow:'210,200,240', mtn:[40,36,60], far:[28,24,36], mid:[18,16,24], near:[8,7,10], sil:[4,4,6], grass:[10,9,12], bird:'#06060a', star:1 }
+  };
+  function theme(){ var t = document.documentElement.getAttribute('data-theme'); return (t === 'dark' || t === 'sepia') ? t : 'light'; }
+  function rnd(seed){ var s = seed >>> 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function rgb(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+  var cv, cx, veil, W = 0, H = 0, DPR = 1, running = false, raf = 0, last = 0, T = 0, boost = 0, curTheme = '', frames = 0;
+  var stars = [], trees = [], blades = [], birds = [], herd = { x: 0 }, HZ = 0, U = 1;
+
+  function build(){
+    curTheme = theme();
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    HZ = H * 0.68; U = Math.min(W, H);
+    var r = rnd(1957), i;
+    stars = []; for (i = 0; i < Math.min(240, W * H / 2200); i++) stars.push({ x: r() * W, y: r() * HZ * 0.9, s: r() * 1.3 + 0.3, p: r() * 6.283 });
+    trees = [{ x: W * 0.16, s: 1.25, k: 0 }, { x: W * 0.88, s: 0.9, k: 0 }, { x: W * 0.62, s: 0.55, k: 0, far: 1 }, { x: W * 0.36, s: 0.45, k: 0, far: 1 }];
+    blades = []; for (i = 0; i < Math.round(W / 5); i++) blades.push({ x: r() * W, h: H * (0.03 + r() * 0.05), p: r() * 6.283 });
+    birds = []; for (i = 0; i < 5; i++) birds.push({ a: r() * 6.283, r: 0.5 + r() * 0.8, v: 0.12 + r() * 0.1, p: r() * 6.283 });
+    herd.x = W * 0.25;
+  }
+  function acacia(g, x, y, s, col){
+    var h = U * 0.2 * s;
+    g.strokeStyle = rgb(col); g.fillStyle = rgb(col); g.lineCap = 'round'; g.lineWidth = Math.max(2, h * 0.055);
+    g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + h * 0.06, y - h * 0.5, x - h * 0.04, y - h * 0.78); g.stroke();
+    g.lineWidth = Math.max(1.4, h * 0.03);
+    [[-0.5, -0.92], [-0.22, -0.98], [0.2, -0.97], [0.52, -0.9]].forEach(function(b){ g.beginPath(); g.moveTo(x - h * 0.02, y - h * 0.62); g.quadraticCurveTo(x + b[0] * h * 0.5, y - h * 0.8, x + b[0] * h, y + b[1] * h); g.stroke(); });
+    g.beginPath(); g.ellipse(x, y - h * 0.98, h * 0.82, h * 0.12, 0, 0, 6.283); g.fill();        // flat crown
+    g.beginPath(); g.ellipse(x - h * 0.3, y - h * 1.04, h * 0.4, h * 0.09, 0, 0, 6.283); g.fill();
+    g.beginPath(); g.ellipse(x + h * 0.34, y - h * 1.03, h * 0.36, h * 0.08, 0, 0, 6.283); g.fill();
+  }
+  function giraffe(g, x, y, s, col, step){
+    g.fillStyle = rgb(col); g.strokeStyle = rgb(col); g.lineCap = 'round';
+    g.beginPath(); g.ellipse(x, y - 30 * s, 13 * s, 7 * s, -0.12, 0, 6.283); g.fill();
+    g.lineWidth = 4.2 * s; g.beginPath(); g.moveTo(x + 9 * s, y - 33 * s); g.lineTo(x + 20 * s, y - 64 * s); g.stroke();   // neck
+    g.beginPath(); g.ellipse(x + 23 * s, y - 66 * s, 5 * s, 2.4 * s, 0.25, 0, 6.283); g.fill();
+    g.lineWidth = 1 * s; g.beginPath(); g.moveTo(x + 20 * s, y - 68 * s); g.lineTo(x + 19.5 * s, y - 72 * s); g.stroke();
+    g.lineWidth = 2.2 * s; var k = Math.sin(step) * 3 * s;
+    [[-9, k], [-5, -k], [7, -k], [10, k]].forEach(function(l){ g.beginPath(); g.moveTo(x + l[0] * s, y - 26 * s); g.lineTo(x + l[0] * s + l[1], y); g.stroke(); });
+    g.lineWidth = 1 * s; g.beginPath(); g.moveTo(x - 12 * s, y - 31 * s); g.lineTo(x - 15 * s, y - 20 * s); g.stroke();     // tail
+  }
+  function elephant(g, x, y, s, col, step){
+    g.fillStyle = rgb(col); g.strokeStyle = rgb(col); g.lineCap = 'round';
+    g.beginPath(); g.ellipse(x, y - 20 * s, 17 * s, 11 * s, 0, 0, 6.283); g.fill();
+    g.beginPath(); g.ellipse(x + 17 * s, y - 24 * s, 8 * s, 8 * s, 0, 0, 6.283); g.fill();          // head
+    g.beginPath(); g.ellipse(x + 11 * s, y - 24 * s, 6 * s, 9 * s, 0.2, 0, 6.283); g.fill();        // ear
+    g.lineWidth = 3.4 * s; g.beginPath(); g.moveTo(x + 23 * s, y - 22 * s); g.quadraticCurveTo(x + 27 * s, y - 10 * s, x + 24 * s, y - 3 * s); g.stroke();   // trunk
+    g.lineWidth = 5.4 * s; var k = Math.sin(step) * 2 * s;
+    [[-10, k], [-3, -k], [6, -k], [12, k]].forEach(function(l){ g.beginPath(); g.moveTo(x + l[0] * s, y - 13 * s); g.lineTo(x + l[0] * s + l[1], y - 1); g.stroke(); });
+  }
+  function draw(dt){
+    var P = PAL[curTheme], g = cx, i, x;
+    var sky = g.createLinearGradient(0, 0, 0, HZ);
+    sky.addColorStop(0, P.sky[0]); sky.addColorStop(0.6, P.sky[1]); sky.addColorStop(1, P.sky[2]);
+    g.fillStyle = sky; g.fillRect(0, 0, W, H);
+    if (P.star) for (i = 0; i < stars.length; i++){ var st = stars[i]; g.fillStyle = 'rgba(240,236,255,' + (0.3 + 0.5 * (0.5 + 0.5 * Math.sin(T * 1.1 + st.p))) + ')'; g.fillRect(st.x, st.y, st.s, st.s); }
+    // the great sun (or moon) low on the horizon
+    var sx = W * 0.5, sy = HZ - U * 0.1, sr = U * (P.star ? 0.07 : 0.15);
+    var gl = g.createRadialGradient(sx, sy, sr * 0.6, sx, sy, sr * 3.4); gl.addColorStop(0, 'rgba(' + P.glow + ',.55)'); gl.addColorStop(1, 'rgba(' + P.glow + ',0)');
+    g.fillStyle = gl; g.fillRect(sx - sr * 3.5, sy - sr * 3.5, sr * 7, sr * 7);
+    g.fillStyle = P.disc; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill();
+    // far mountain with a pale summit
+    g.fillStyle = rgb(P.mtn, 0.85); g.beginPath(); g.moveTo(-10, HZ);
+    g.lineTo(W * 0.02, HZ - H * 0.03); g.lineTo(W * 0.2, HZ - H * 0.1); g.lineTo(W * 0.27, HZ - H * 0.104); g.lineTo(W * 0.34, HZ - H * 0.1); g.lineTo(W * 0.58, HZ - H * 0.015); g.lineTo(W * 0.7, HZ); g.fill();
+    g.fillStyle = 'rgba(255,250,240,' + (P.star ? 0.35 : 0.7) + ')'; g.beginPath(); g.moveTo(W * 0.2, HZ - H * 0.1); g.lineTo(W * 0.27, HZ - H * 0.104); g.lineTo(W * 0.34, HZ - H * 0.1); g.lineTo(W * 0.31, HZ - H * 0.088); g.lineTo(W * 0.27, HZ - H * 0.094); g.lineTo(W * 0.235, HZ - H * 0.086); g.fill();
+    // plains
+    g.fillStyle = rgb(P.far); g.fillRect(0, HZ - 2, W, H - HZ + 2);
+    for (i = 0; i < trees.length; i++) if (trees[i].far) acacia(g, trees[i].x, HZ + H * 0.012, trees[i].s, P.mid);
+    g.fillStyle = rgb(P.mid); g.beginPath(); g.moveTo(0, H); for (x = 0; x <= W; x += 10) g.lineTo(x, HZ + H * 0.035 + Math.sin(x / W * 5 + 1) * H * 0.008); g.lineTo(W, H); g.fill();
+    // the herd crossing
+    herd.x += dt * (7 + boost * 30); if (herd.x > W + 200) herd.x = -220;
+    var hs = U / 420, hy = HZ + H * 0.05;
+    giraffe(g, herd.x, hy, hs, P.sil, T * 2.2); giraffe(g, herd.x - 44 * hs, hy, hs * 0.82, P.sil, T * 2.2 + 1.5);
+    elephant(g, herd.x - 150 * hs, hy + 2, hs * 0.95, P.sil, T * 1.8); elephant(g, herd.x - 196 * hs, hy + 2, hs * 0.6, P.sil, T * 2.4 + 1);
+    // near ground, acacias, grass
+    g.fillStyle = rgb(P.near); g.beginPath(); g.moveTo(0, H); for (x = 0; x <= W; x += 10) g.lineTo(x, H * 0.84 + Math.sin(x / W * 3.3) * H * 0.012); g.lineTo(W, H); g.fill();
+    for (i = 0; i < trees.length; i++) if (!trees[i].far) acacia(g, trees[i].x, H * 0.86, trees[i].s, P.sil);
+    g.strokeStyle = rgb(P.grass); g.lineWidth = 1.3; g.lineCap = 'round';
+    for (i = 0; i < blades.length; i++){ var b = blades[i], sw = Math.sin(T * 1.4 + b.p + b.x * 0.01) * b.h * 0.35; g.beginPath(); g.moveTo(b.x, H); g.quadraticCurveTo(b.x + sw * 0.3, H - b.h * 0.6, b.x + sw, H - b.h); g.stroke(); }
+    // birds wheeling near the sun
+    g.strokeStyle = P.bird; g.lineWidth = 1.5;
+    for (i = 0; i < birds.length; i++){ var bd = birds[i]; bd.a += bd.v * dt; var bx = sx + Math.cos(bd.a) * U * 0.22 * bd.r, by = sy - U * 0.16 + Math.sin(bd.a) * U * 0.05 * bd.r, f = Math.sin(T * 5 + bd.p) * 2.5;
+      g.beginPath(); g.moveTo(bx - 6, by - f); g.quadraticCurveTo(bx - 2, by - 2, bx, by); g.quadraticCurveTo(bx + 2, by - 2, bx + 6, by - f); g.stroke(); }
+  }
+  function frame(now){
+    raf = 0; if (!running) return;
+    var dt = last ? Math.min(.05, (now - last) / 1000) : 0; last = now; T += dt; boost *= .96; frames++;
+    draw(dt); raf = requestAnimationFrame(frame);
+  }
+  function start(){ running = true; if (!raf && !document.hidden){ last = 0; raf = requestAnimationFrame(frame); } }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+  function resize(){ W = window.innerWidth; H = window.innerHeight; build(); draw(0); }
+  function init(){
+    if (window.__hvLib3D) return;
+    cv = document.createElement('canvas'); cv.id = ID; cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;display:block';
+    cx = cv.getContext('2d', { alpha: false });
+    if (!cx) return;
+    document.body.insertBefore(cv, document.body.firstChild);
+    veil = document.getElementById('hv-lib3d-veil');
+    if (!veil){ veil = document.createElement('div'); veil.id = 'hv-lib3d-veil'; veil.setAttribute('aria-hidden', 'true'); document.body.insertBefore(veil, cv.nextSibling); }
+    W = window.innerWidth; H = window.innerHeight; build(); draw(0);
+    var rz = 0; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(resize, 160); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = 0; } } else if (running) start(); });
+    try { new MutationObserver(function(){ if (theme() !== curTheme){ build(); draw(0); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    document.documentElement.classList.remove('hv-lib3d-off'); document.documentElement.classList.add('hv-lib3d-on');
+    window.__hvLib3D = { canvas: cv, gl: null, scrolls: 0, stop: stop, start: start, boost: function(){ boost = 1; },
+      _q: function(){ return { running: running, frames: frames, theme: curTheme, w: W, h: H }; }, _setShot: function(){} };
+    start(); scope();
+  }
+  function isReading(){
+    try {
+      var r = document.querySelector('[data-view]'), v = r ? r.getAttribute('data-view') : null;
+      if (v === 'article' || v === 'dict' || document.documentElement.classList.contains('hv-conc-open')) return true;
+      var u = document.getElementById('reader-view'); if (u && u.classList.contains('open')) return true;
+    } catch (e) {}
+    return false;
+  }
+  var was = null;
+  function sync(){
+    var r = isReading(); if (r === was) return; was = r; var d = document.documentElement;
+    if (r){ d.classList.add('hv-reading'); d.classList.remove('hv-lib3d-on'); stop(); }
+    else { d.classList.remove('hv-reading'); d.classList.add('hv-lib3d-on'); start(); }
+  }
+  function watch(){
+    var r = document.querySelector('[data-view]');
+    if (r && !r.__hvScopeObs){ r.__hvScopeObs = new MutationObserver(sync); r.__hvScopeObs.observe(r, { attributes: true, attributeFilter: ['data-view'] }); }
+    var v = document.getElementById('reader-view');
+    if (v && !v.__hvScopeObs){ v.__hvScopeObs = new MutationObserver(sync); v.__hvScopeObs.observe(v, { attributes: true, attributeFilter: ['class'] }); }
+  }
+  function scope(){
+    window.addEventListener('hashchange', function(){ watch(); sync(); }); window.addEventListener('popstate', function(){ watch(); sync(); });
+    watch(); sync(); setTimeout(function(){ watch(); sync(); }, 700); setTimeout(function(){ watch(); sync(); }, 2500);
+  }
+  function enabled(){ try { return localStorage.getItem('hermes_lib3d') !== 'off' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return true; } }
+  function boot(){ if (enabled()) init(); else document.documentElement.classList.add('hv-lib3d-off'); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.hvSetLib3D = function(on){
+    try { localStorage.setItem('hermes_lib3d', on ? 'on' : 'off'); } catch (e) {}
+    var d = document.documentElement;
+    if (on){ if (window.__hvLib3D){ d.classList.remove('hv-lib3d-off'); d.classList.add('hv-lib3d-on'); cv.style.display = 'block'; start(); } else init(); }
+    else { stop(); if (cv) cv.style.display = 'none'; d.classList.remove('hv-lib3d-on'); d.classList.add('hv-lib3d-off'); }
+    return !!on;
+  };
+  window.hvLib3DEnabled = function(){ try { return localStorage.getItem('hermes_lib3d') !== 'off'; } catch (e) { return false; } };
+})();
