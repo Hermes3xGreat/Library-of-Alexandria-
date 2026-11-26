@@ -17,6 +17,9 @@ A free, offline reading app that gathers ten libraries of public-domain classics
 
 Each library keeps its own bookmarks, notes and reading place. The front hall searches titles, authors and the full text of every book. Where a work has a second translation or its original-language text, a switch at the top of the page changes between them. 63 books carry their illustrations (1,142 pictures), including every seal of the *Lesser Key of Solomon* and every card of Waite's Tarot.
 
+## Download
+Android apps for the whole Library and for each library on its own: see **[downloads](downloads/README.md)**.
+
 ## What is in this repository
 | Folder | Contents |
 |---|---|
@@ -24,9 +27,10 @@ Each library keeps its own bookmarks, notes and reading place. The front hall se
 | `engine/` | The shared reader (`shell.html`), backgrounds, chimes, add-ons and the Alexandria hall. |
 | `scrolls/` | One folder per library: settings, shelves, book files, covers, Android base. |
 | `tools/` | Build, import, clean-up, picture and audit tools. See `tools/README.md`. |
+| `downloads/` | Signed Android apps for the separate libraries, with install steps. |
 | `docs/` | Notes on the engine. |
 
-The Android app (about 275 MB) is larger than GitHub allows inside a repository, so it is not here. Build it with `tools/build_alexandria.py`, or attach it to a Release.
+The combined Android app (about 275 MB) is larger than GitHub allows inside a repository, so it is published as a Release download instead.
 
 ## Building
 ```
