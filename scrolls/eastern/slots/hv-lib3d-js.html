@@ -1,0 +1,201 @@
+<script id="hv-lib3d-js">/* Eastern Scroll — animated background: ink-wash mountains, mist, a pagoda, the sun (moon at night), drifting petals.
+   Replaces the Eastern Scroll pillar hallway; keeps the same window.__hvLib3D / hvSetLib3D interface. */
+(function(){
+  if (window.__hvLib3D) return;
+  var ID = 'hv-lib3d';
+  var PAL = {
+    light: { sky:['#f4ecd9','#efe1c6','#ead3b0'], disc:'#c9412b', glow:'201,65,43', ink:[52,58,72], far:[196,190,176], mist:'250,244,230', petal:['#e7a1ad','#f1c3c9','#d8808f'], bird:'rgba(40,42,50,.55)', lamp:'rgba(201,65,43,.0)' },
+    sepia: { sky:['#eadfc4','#e2d0ab','#d9bd8f'], disc:'#b8442a', glow:'184,68,42', ink:[62,50,38], far:[188,170,138], mist:'240,228,200', petal:['#d99a8f','#e8bfae','#c97f73'], bird:'rgba(50,40,30,.55)', lamp:'rgba(0,0,0,0)' },
+    dark:  { sky:['#090d18','#101830','#1c2440'], disc:'#ece6cf', glow:'236,230,207', ink:[6,8,14], far:[44,54,84], mist:'120,138,180', petal:['#b9788a','#d9a3ad','#8e5a6c'], bird:'rgba(200,205,220,.35)', lamp:'rgba(255,190,110,.9)' }
+  };
+  function theme(){ var t = document.documentElement.getAttribute('data-theme'); return (t === 'dark' || t === 'sepia') ? t : 'light'; }
+  function rnd(seed){ var s = seed >>> 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function mix(a, b, k){ return [Math.round(a[0] + (b[0]-a[0])*k), Math.round(a[1] + (b[1]-a[1])*k), Math.round(a[2] + (b[2]-a[2])*k)]; }
+  function rgb(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + (a == null ? 1 : a) + ')'; }
+
+  var cv, cx, veil, W = 0, H = 0, DPR = 1, layers = [], mists = [], petals = [], birds = [], running = false, alive = true, raf = 0, last = 0, T = 0, boost = 0, curTheme = '', frames = 0;
+  var NL = 5;
+
+  // one periodic ridge line: y(x) for x in [0, period)
+  function ridge(period, base, amp, rough, seed){
+    var r = rnd(seed), terms = [], i;
+    for (i = 1; i <= 7; i++) terms.push({ k: i, a: amp * Math.pow(rough, i - 1) * (0.55 + r() * 0.9), p: r() * 6.283 });
+    return function(x){ var u = x / period * 6.283, y = 0, j; for (j = 0; j < terms.length; j++) y += Math.sin(u * terms[j].k * (j < 2 ? 1 : 2) + terms[j].p) * terms[j].a; return base + y; };
+  }
+  function pagoda(g, x, y, s, col){
+    g.fillStyle = col; var tiers = 5, w = 26 * s, h = 13 * s, i, yy = y;
+    g.fillRect(x - w * 0.62, yy - 4 * s, w * 1.24, 4 * s); yy -= 4 * s;
+    for (i = 0; i < tiers; i++){
+      var bw = w * (1 - i * 0.13);
+      g.fillRect(x - bw * 0.36, yy - h, bw * 0.72, h);           // storey
+      yy -= h;
+      g.beginPath();                                              // upswept roof
+      g.moveTo(x - bw * 0.82, yy + 1.5 * s);
+      g.quadraticCurveTo(x - bw * 0.5, yy - 0.5 * s, x - bw * 0.3, yy - 5 * s);
+      g.lineTo(x + bw * 0.3, yy - 5 * s);
+      g.quadraticCurveTo(x + bw * 0.5, yy - 0.5 * s, x + bw * 0.82, yy + 1.5 * s);
+      g.quadraticCurveTo(x, yy + 4.5 * s, x - bw * 0.82, yy + 1.5 * s);
+      g.fill(); yy -= 5 * s;
+    }
+    g.fillRect(x - 1.1 * s, yy - 16 * s, 2.2 * s, 16 * s);         // finial
+    for (i = 0; i < 3; i++) g.fillRect(x - (3.4 - i) * s, yy - (4 + i * 4) * s, (6.8 - 2 * i) * s, 1.3 * s);
+  }
+  function pine(g, x, y, s, col, r){
+    g.fillStyle = col; g.strokeStyle = col; g.lineWidth = Math.max(1, 2.2 * s); g.lineCap = 'round';
+    var lean = (r() - 0.5) * 10 * s, hgt = (60 + r() * 30) * s;
+    g.beginPath(); g.moveTo(x, y + 6 * s); g.quadraticCurveTo(x + lean * 0.3, y - hgt * 0.5, x + lean, y - hgt); g.stroke();
+    var n = 4 + Math.floor(r() * 2), i;
+    for (i = 0; i < n; i++){
+      var k = 0.35 + i / n * 0.65, px = x + lean * k * k, py = y - hgt * k, wd = (30 - i * 4.2) * s * (0.8 + r() * 0.4), side = (i % 2 ? 1 : -1) * (6 + r() * 6) * s;
+      g.beginPath(); g.ellipse(px + side, py, wd, 4.6 * s, side > 0 ? -0.12 : 0.12, 0, 6.283); g.fill();
+    }
+  }
+  function build(){
+    var th = theme(), P = PAL[th]; curTheme = th;
+    DPR = Math.min(window.devicePixelRatio || 1, W < 700 ? 1.5 : 1.25);
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+    layers = [];
+    var i;
+    for (i = 0; i < NL; i++){
+      var k = i / (NL - 1);                                   // 0 far … 1 near
+      var period = Math.max(900, Math.round(W * (1.7 + k * 0.5)));
+      var base = H * (0.50 + k * 0.33), amp = H * (0.095 - k * 0.035), f = ridge(period, base, amp, 0.56, 1001 + i * 97);
+      var c = document.createElement('canvas'); c.width = Math.round(period * DPR); c.height = Math.round(H * DPR);
+      var g = c.getContext('2d'); g.scale(DPR, DPR);
+      var col = mix(P.far, P.ink, Math.pow(k, 1.25)), x, top = 1e9;
+      g.beginPath(); g.moveTo(0, H);
+      for (x = 0; x <= period; x += 3){ var y = f(x); if (y < top) top = y; g.lineTo(x, y); }
+      g.lineTo(period, H); g.closePath();
+      var gr = g.createLinearGradient(0, top, 0, Math.min(H, top + H * 0.42));
+      gr.addColorStop(0, rgb(col, 0.96)); gr.addColorStop(0.5, rgb(col, 0.62)); gr.addColorStop(1, rgb(col, th === 'dark' ? 0.5 : 0.12));
+      g.fillStyle = gr; g.fill();
+      var r = rnd(55 + i * 13), sc = Math.max(0.7, Math.min(1.5, H / 800));
+      if (i === 2){ var px = period * 0.3; pagoda(g, px, f(px) + 5, 1.15 * sc, rgb(col, 0.97)); }
+      if (i === 1){ var px2 = period * 0.78; pagoda(g, px2, f(px2) + 4, 0.6 * sc, rgb(col, 0.9)); }
+      if (i >= 3){
+        var n = i === 3 ? 5 : 7, j;
+        for (j = 0; j < n; j++){ var tx = (j + 0.2 + r() * 0.6) / n * period; if (tx < 40 || tx > period - 40) continue; pine(g, tx, f(tx), (i === 3 ? 0.62 : 1.0) * sc, rgb(col, 0.98), r); }
+      }
+      layers.push({ c: c, period: period, speed: 2.2 + k * k * 11, top: top });
+    }
+    // mist: soft elongated blobs
+    mists = []; var rm = rnd(7);
+    for (i = 0; i < 7; i++) mists.push({ x: rm() * W * 1.6, y: H * (0.47 + rm() * 0.42), w: W * (0.7 + rm() * 0.9), h: H * (0.05 + rm() * 0.07), v: 4 + rm() * 9, a: 0.3 + rm() * 0.35, after: Math.floor(rm() * NL) });
+    var np = W < 700 ? 16 : 30, rp = rnd(99); petals = [];
+    for (i = 0; i < np; i++) petals.push({ x: rp() * W, y: rp() * H, s: 2.4 + rp() * 3.4, vy: 12 + rp() * 20, vx: -8 - rp() * 14, ph: rp() * 6.283, sp: 0.6 + rp() * 1.3, c: Math.floor(rp() * 3), rot: rp() * 6.283, vr: (rp() - 0.5) * 2.4 });
+    birds = []; var rb = rnd(5);
+    for (i = 0; i < 5; i++) birds.push({ dx: i * 26 + rb() * 10, dy: (i % 2 ? 1 : -1) * (i * 7) + rb() * 6, ph: rb() * 6.283 });
+  }
+  function draw(dt){
+    var P = PAL[curTheme], g = cx, i;
+    g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var sk = g.createLinearGradient(0, 0, 0, H);
+    sk.addColorStop(0, P.sky[0]); sk.addColorStop(0.55, P.sky[1]); sk.addColorStop(1, P.sky[2]);
+    g.fillStyle = sk; g.fillRect(0, 0, W, H);
+    // sun / moon
+    var sx = W * (W < 700 ? 0.74 : 0.7), sy = H * 0.2 + Math.sin(T * 0.05) * H * 0.012, sr = Math.min(W, H) * (W < 700 ? 0.13 : 0.085);
+    var gl = g.createRadialGradient(sx, sy, sr * 0.6, sx, sy, sr * 3.4);
+    gl.addColorStop(0, 'rgba(' + P.glow + ',' + (curTheme === 'dark' ? 0.22 : 0.2) + ')'); gl.addColorStop(1, 'rgba(' + P.glow + ',0)');
+    g.fillStyle = gl; g.fillRect(sx - sr * 3.5, sy - sr * 3.5, sr * 7, sr * 7);
+    g.fillStyle = P.disc; g.globalAlpha = curTheme === 'dark' ? 0.92 : 0.86; g.beginPath(); g.arc(sx, sy, sr, 0, 6.283); g.fill(); g.globalAlpha = 1;
+    // cranes crossing, far away
+    var bx = ((T * 9) % (W + 420)) - 210, by = H * 0.3 + Math.sin(T * 0.21) * 14;
+    g.strokeStyle = P.bird; g.lineWidth = 1.4; g.lineCap = 'round';
+    for (i = 0; i < birds.length; i++){
+      var b = birds[i], fx = bx - b.dx, fy = by + b.dy, fl = Math.sin(T * 3.1 + b.ph) * 3.2;
+      g.beginPath(); g.moveTo(fx - 7, fy - fl); g.quadraticCurveTo(fx - 3, fy - 1.5, fx, fy); g.quadraticCurveTo(fx + 3, fy - 1.5, fx + 7, fy - fl); g.stroke();
+    }
+    for (i = 0; i < layers.length; i++){
+      var L = layers[i], off = (T * L.speed) % L.period, x0 = -off;
+      while (x0 < W){ g.drawImage(L.c, 0, 0, L.c.width, L.c.height, x0, 0, L.period, H); x0 += L.period; }
+      for (var m = 0; m < mists.length; m++){
+        var M = mists[m]; if (M.after !== i) continue;
+        var span = W + M.w * 2, mx = ((M.x + T * M.v) % span) - M.w;
+        var mg = g.createRadialGradient(mx, M.y, 0, mx, M.y, M.w * 0.5);
+        mg.addColorStop(0, 'rgba(' + P.mist + ',' + M.a + ')'); mg.addColorStop(1, 'rgba(' + P.mist + ',0)');
+        g.save(); g.translate(0, M.y); g.scale(1, M.h / (M.w * 0.5)); g.translate(0, -M.y);
+        g.fillStyle = mg; g.fillRect(mx - M.w * 0.5, M.y - M.w * 0.5, M.w, M.w); g.restore();
+      }
+    }
+    // petals
+    for (i = 0; i < petals.length; i++){
+      var p = petals[i];
+      p.y += (p.vy * (1 + boost * 2)) * dt; p.x += (p.vx + Math.sin(T * p.sp + p.ph) * 16) * dt; p.rot += p.vr * dt;
+      if (p.y > H + 12){ p.y = -12; p.x = Math.random() * (W + 120); }
+      if (p.x < -14) p.x = W + 12;
+      g.save(); g.translate(p.x, p.y); g.rotate(p.rot); g.scale(1, 0.55 + 0.4 * Math.sin(T * p.sp * 1.7 + p.ph));
+      g.fillStyle = P.petal[p.c]; g.globalAlpha = 0.85;
+      g.beginPath(); g.moveTo(0, -p.s); g.quadraticCurveTo(p.s * 0.95, -p.s * 0.2, 0, p.s); g.quadraticCurveTo(-p.s * 0.95, -p.s * 0.2, 0, -p.s); g.fill();
+      g.restore();
+    }
+    g.globalAlpha = 1;
+  }
+  function tick(now){
+    raf = 0; if (!running) return;
+    var dt = Math.min(0.08, (now - last) / 1000 || 0.016);
+    if (now - last < 30){ raf = requestAnimationFrame(tick); return; }   // ~30 fps is plenty
+    last = now; T += dt * (1 + boost * 3); boost = Math.max(0, boost - dt * 0.45);
+    if (theme() !== curTheme) build();
+    draw(dt); frames++;
+    raf = requestAnimationFrame(tick);
+  }
+  function start(){ if (!alive) return; running = true; if (!raf && !document.hidden){ last = performance.now(); raf = requestAnimationFrame(tick); } }
+  function stop(){ running = false; if (raf){ cancelAnimationFrame(raf); raf = 0; } }
+  function resize(){ var w = window.innerWidth, h = window.innerHeight; if (w === W && Math.abs(h - H) < 90) return; W = w; H = h; build(); draw(0); }
+
+  function init(){
+    if (window.__hvLib3D) return;
+    cv = document.createElement('canvas'); cv.id = ID; cv.setAttribute('aria-hidden', 'true');
+    cv.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;display:block';
+    cx = cv.getContext('2d', { alpha: false });
+    if (!cx) return;
+    document.body.insertBefore(cv, document.body.firstChild);
+    veil = document.getElementById('hv-lib3d-veil');
+    if (!veil){ veil = document.createElement('div'); veil.id = 'hv-lib3d-veil'; veil.setAttribute('aria-hidden', 'true'); document.body.insertBefore(veil, cv.nextSibling); }
+    W = window.innerWidth; H = window.innerHeight; build(); draw(0);
+    var rz = 0; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(resize, 160); });
+    document.addEventListener('visibilitychange', function(){ if (document.hidden){ if (raf){ cancelAnimationFrame(raf); raf = 0; } } else if (running) start(); });
+    try { new MutationObserver(function(){ if (theme() !== curTheme){ build(); draw(0); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); } catch (e) {}
+    document.documentElement.classList.remove('hv-lib3d-off'); document.documentElement.classList.add('hv-lib3d-on');
+    window.__hvLib3D = { canvas: cv, gl: null, scrolls: 0, stop: stop, start: start, boost: function(){ boost = 1; },
+      _q: function(){ return { running: running, frames: frames, theme: curTheme, layers: layers.length, w: W, h: H }; }, _setShot: function(){} };
+    start(); scope();
+  }
+  // pause behind the reader / articles, like the hallway did
+  function isReading(){
+    try {
+      var r = document.querySelector('[data-view]'), v = r ? r.getAttribute('data-view') : null;
+      if (v === 'article' || v === 'dict' || document.documentElement.classList.contains('hv-conc-open')) return true;
+      var u = document.getElementById('reader-view'); if (u && u.classList.contains('open')) return true;
+    } catch (e) {}
+    return false;
+  }
+  var was = null;
+  function sync(){
+    var r = isReading(); if (r === was) return; was = r; var d = document.documentElement;
+    if (r){ d.classList.add('hv-reading'); d.classList.remove('hv-lib3d-on'); stop(); }
+    else { d.classList.remove('hv-reading'); d.classList.add('hv-lib3d-on'); start(); }
+  }
+  function watch(){
+    var r = document.querySelector('[data-view]');
+    if (r && !r.__hvScopeObs){ r.__hvScopeObs = new MutationObserver(sync); r.__hvScopeObs.observe(r, { attributes: true, attributeFilter: ['data-view'] }); }
+    var v = document.getElementById('reader-view');
+    if (v && !v.__hvScopeObs){ v.__hvScopeObs = new MutationObserver(sync); v.__hvScopeObs.observe(v, { attributes: true, attributeFilter: ['class'] }); }
+  }
+  function scope(){
+    window.addEventListener('hashchange', function(){ watch(); sync(); }); window.addEventListener('popstate', function(){ watch(); sync(); });
+    watch(); sync(); setTimeout(function(){ watch(); sync(); }, 700); setTimeout(function(){ watch(); sync(); }, 2500);
+  }
+  function enabled(){ try { return localStorage.getItem('hermes_lib3d') !== 'off' && !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return true; } }
+  function boot(){ if (enabled()) init(); else document.documentElement.classList.add('hv-lib3d-off'); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  window.hvSetLib3D = function(on){
+    try { localStorage.setItem('hermes_lib3d', on ? 'on' : 'off'); } catch (e) {}
+    var d = document.documentElement;
+    if (on){ if (window.__hvLib3D){ d.classList.remove('hv-lib3d-off'); d.classList.add('hv-lib3d-on'); cv.style.display = 'block'; start(); } else init(); }
+    else { stop(); if (cv) cv.style.display = 'none'; d.classList.remove('hv-lib3d-on'); d.classList.add('hv-lib3d-off'); }
+    return !!on;
+  };
+  window.hvLib3DEnabled = function(){ try { return localStorage.getItem('hermes_lib3d') !== 'off'; } catch (e) { return false; } };
+})();
+</script>

@@ -1,0 +1,58 @@
+{
+ "id": "eastern",
+ "name": "Eastern Scroll",
+ "version": "1.7",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.easternscroll.app",
+  "label": "Eastern Scroll",
+  "versionCode": 8,
+  "versionName": "1.7",
+  "keystore": "",
+  "alias": "easternscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · 2026-11-24 · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of the East",
+  "description": "the East: the Vedas and Upanishads, the Sanskrit epics, the Pali Canon, Laozi, Sun Tzu, the Avesta and more.",
+  "description_2": "the East: the Vedas and Upanishads, the Sanskrit epics, the Pali Canon, Laozi, Sun Tzu, the Avesta and more.",
+  "description_3": "the East: the Vedas and Upanishads, the Sanskrit epics, the Pali Canon, Laozi, Sun Tzu, the Avesta and more.\"><meta name=\"theme-color\" content=\"#9e2f23",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "EASTERN",
+  "export_site": "{{name}}",
+  "id": "eastern",
+  "native_names": "ZARATHUSHTRA\",Laozi:\"老子\",\"Sun Tzu\":\"孫子\",\"Wu Tzu\":\"吳子\",Valmiki:\"वाल्मीकि\",Vyasa:\"व्यास\",Asvaghosa:\"अश्वघोष\",Bharavi:\"भारवि\",Bhatti:\"भट्टि\",Kabir:\"कबीर\",\"The Buddha\":\"बुद्ध\",\"The Book of Sindibad\":\"سندبادنامه",
+  "site_url": "",
+  "intro_tagline_end": "East",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of the East",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Original texts.</b> The Tao Te Ching, the Art of War, the Dhammapada, the Rigveda and the Upanishads carry the Chinese, Pali or Sanskrit &mdash; the parallel button in the reader sets it beside the English, and the two columns move as one.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "the Vedas, the Buddha",
+  "intro_chime": "w(110,{gain:.34,dur:4.2,rev:.85,when:.02}),[293.66,329.63,392,440,587.33,659.25].forEach(function(t,e){l(t,{type:\"triangle\",dur:.35,gain:.2,attack:.004,release:1.6,cutoff:3200,rev:.6,when:.5+e*.16}),l(t*2,{type:\"sine\",dur:.2,gain:.05,attack:.004,release:1,cutoff:5000,rev:.6,when:.5+e*.16})}),[146.83,220].forEach(function(t){l(t,{type:\"sine\",dur:3,gain:.1,attack:1.2,release:2.4,cutoff:1800,rev:.7})}),w(1174.66,{gain:.12,dur:2.2,rev:.85,when:1.6})"
+ },
+ "color": "#9e2f23",
+ "icon_color": "#9e2f23",
+ "glyph": "東",
+ "initials": "ES",
+ "mark_width": 1.1
+}
