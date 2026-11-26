@@ -1,0 +1,55 @@
+{
+ "id": "pantheon",
+ "name": "Pantheon Scroll",
+ "version": "0.6",
+ "books": "books",
+ "data": "data",
+ "web_extras": "web",
+ "android": {
+  "package": "com.pantheonscroll.app",
+  "label": "Pantheon Scroll",
+  "versionCode": 6,
+  "versionName": "0.6",
+  "alias": "pantheonscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of Greece and Rome",
+  "description": "Pantheon Scroll: a free offline library of the Greek and Roman world — Homer and Virgil, the tragedians and Aristophanes, the lyric poets, Herodotus, Thucydides, Livy and Tacitus, Plutarch's Lives, the orators, and the sciences of antiquity.",
+  "description_2": "Pantheon Scroll: a free offline library of the Greek and Roman world — Homer and Virgil, the tragedians and Aristophanes, the lyric poets, Herodotus, Thucydides, Livy and Tacitus, Plutarch's Lives, the orators, and the sciences of antiquity.",
+  "description_3": "Pantheon Scroll: a free offline library of the Greek and Roman world — Homer and Virgil, the tragedians and Aristophanes, the lyric poets, Herodotus, Thucydides, Livy and Tacitus, Plutarch's Lives, the orators, and the sciences of antiquity.\"><meta name=\"theme-color\" content=\"#8a1f2b",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": "",
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "PANTHEON",
+  "export_site": "{{name}}",
+  "id": "pantheon",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "Greeks and Romans",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of Greece and Rome",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Homer, Virgil, Caesar, a word, a phrase…",
+  "intro_chime": "[146.83,220,293.66,349.23,440,523.25,587.33].forEach(function(f,e){l(f,{type:\"triangle\",dur:.22,gain:.17,attack:.002,release:1.6,cutoff:3000,rev:.65,when:.05+e*.16}),l(f*2,{type:\"sine\",dur:.1,gain:.04,attack:.002,release:.8,cutoff:5000,rev:.65,when:.05+e*.16})}),[[146.83,1.3],[220,1.3],[293.66,1.5]].forEach(function(n){l(n[0],{type:\"sawtooth\",dur:1.8,gain:.07,attack:.5,release:1.8,cutoff:1000,detune:4,rev:.75,when:n[1]})}),l(73.42,{type:\"triangle\",dur:3.2,gain:.13,attack:1,release:2.4,cutoff:500,rev:.7,when:.1}),w(587.33,{gain:.13,dur:2.4,rev:.85,when:1.6})"
+ },
+ "color": "#8a1f2b",
+ "icon_color": "#8a1f2b",
+ "glyph": "Ω",
+ "initials": "PS",
+ "mark_width": 1.1
+}
