@@ -1,0 +1,57 @@
+{
+ "id": "liberty",
+ "name": "Liberty Scroll",
+ "version": "1.0",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.libertyscroll.app",
+  "label": "Liberty Scroll",
+  "versionCode": 10,
+  "versionName": "1.0",
+  "alias": "libertyscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of American History",
+  "description": "Liberty Scroll: a free offline library of American history — the founding documents, the Federalist Papers, presidents' addresses, explorers' journals, slave narratives, Civil War memoirs and the voices of reform.",
+  "description_2": "Liberty Scroll: a free offline library of American history — the founding documents, the Federalist Papers, presidents' addresses, explorers' journals, slave narratives, Civil War memoirs and the voices of reform.",
+  "description_3": "Liberty Scroll: a free offline library of American history — the founding documents, the Federalist Papers, presidents' addresses, explorers' journals, slave narratives, Civil War memoirs and the voices of reform.\"><meta name=\"theme-color\" content=\"#2a4170",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "LIBERTY",
+  "export_site": "{{name}}",
+  "id": "liberty",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "United States",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of American History",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Federalist, Lincoln, Douglass, a word, a phrase…",
+  "intro_chime": "[0,.12,.24,.36,.48].forEach(function(t,e){l(e===4?98:147,{type:\"triangle\",dur:.08,gain:e===4?.22:.1,attack:.002,release:.18,cutoff:900,rev:.4,when:t})}),[[392,.55,.18],[523.25,.75,.18],[659.25,.95,.18],[783.99,1.15,.5],[659.25,1.7,.18],[783.99,1.9,.9]].forEach(function(n){l(n[0],{type:\"square\",dur:n[2],gain:.06,attack:.01,release:.5,cutoff:2200,rev:.65,when:n[1]}),w(n[0]*2,{gain:.06,dur:n[2]+.2,rev:.7,when:n[1]})}),[261.63,329.63,392].forEach(function(f){l(f,{type:\"sawtooth\",dur:2.4,gain:.045,attack:.6,release:2,cutoff:1100,rev:.75,when:1.9})}),l(130.81,{type:\"triangle\",dur:3,gain:.12,attack:.8,release:2.2,cutoff:600,rev:.7,when:1.9})"
+ },
+ "color": "#2a4170",
+ "icon_color": "#2a4170",
+ "glyph": "★",
+ "initials": "LS",
+ "mark_width": 1.1
+}
