@@ -1,0 +1,57 @@
+{
+ "id": "egyptian",
+ "name": "Egyptian Scroll",
+ "version": "0.9",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.egyptianscroll.app",
+  "label": "Egyptian Scroll",
+  "versionCode": 9,
+  "versionName": "0.9",
+  "alias": "egyptianscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of Ancient Egypt",
+  "description": "ancient Egypt: the Book of the Dead, hymns to Ra and Osiris, the Instruction of Ptah-hotep, the tales of the scribes, Hermes Thrice-Great, and Egypt as the Greeks saw it.",
+  "description_2": "ancient Egypt: the Book of the Dead, hymns to Ra and Osiris, the Instruction of Ptah-hotep, the tales of the scribes, Hermes Thrice-Great, and Egypt as the Greeks saw it.",
+  "description_3": "ancient Egypt: the Book of the Dead, hymns to Ra and Osiris, the Instruction of Ptah-hotep, the tales of the scribes, Hermes Thrice-Great, and Egypt as the Greeks saw it.\"><meta name=\"theme-color\" content=\"#16706b",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "EGYPTIAN",
+  "export_site": "{{name}}",
+  "id": "egyptian",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "Nile",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of the Nile",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Osiris, Ptah-hotep, Hermes",
+  "intro_chime": "[73.42,146.83].forEach(function(t,e){l(t,{type:\"sawtooth\",dur:3.4,gain:.1-e*.03,attack:1,release:2.4,cutoff:700,detune:e?3:-3,rev:.6})}),[293.66,311.13,369.99,392,440,466.16,587.33].forEach(function(t,e){l(t,{type:\"triangle\",dur:.3,gain:.25,attack:.003,release:1.4,cutoff:3600,rev:.55,when:.35+e*.13})}),[0,1,2,3,4,5,6,7,8,9,10,11].forEach(function(k){l(3200+k%3*700,{type:\"square\",dur:.03,gain:.035,attack:.001,release:.08,cutoff:9000,rev:.3,when:.3+k*.06+k%2*.02})}),w(587.33,{gain:.22,dur:2.6,rev:.8,when:1.35})"
+ },
+ "color": "#16706b",
+ "icon_color": "#16706b",
+ "glyph": "☥",
+ "initials": "ⲔⲘ",
+ "mark_width": 1.1
+}
