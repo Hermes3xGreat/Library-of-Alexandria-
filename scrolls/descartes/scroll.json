@@ -1,0 +1,57 @@
+{
+ "id": "descartes",
+ "name": "Descartes Scroll",
+ "version": "0.6",
+ "books": "books",
+ "data": null,
+ "web_extras": "web",
+ "android": {
+  "package": "com.descartesscroll.app",
+  "label": "Descartes Scroll",
+  "versionCode": 6,
+  "versionName": "0.6",
+  "alias": "descartesscroll"
+ },
+ "text": {
+  "build_comment": "{{name}} {{version}} · built on the shared Scroll engine",
+  "webgl_probe": "",
+  "subtitle": "A Library of Modern Philosophy",
+  "description": "Descartes Scroll: a free offline library of modern philosophy — Descartes, Spinoza, Locke, Hume, Rousseau, Kant, Schopenhauer, Mill, Nietzsche, William James and more.",
+  "description_2": "Descartes Scroll: a free offline library of modern philosophy — Descartes, Spinoza, Locke, Hume, Rousseau, Kant, Schopenhauer, Mill, Nietzsche, William James and more.",
+  "description_3": "Descartes Scroll: a free offline library of modern philosophy — Descartes, Spinoza, Locke, Hume, Rousseau, Kant, Schopenhauer, Mill, Nietzsche, William James and more.\"><meta name=\"theme-color\" content=\"#5a6470",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "",
+  "footer_links_end": "",
+  "covers": {
+   "file": "text/covers.txt"
+  },
+  "slot_label_langs": "\\w+",
+  "slot_label_rewrite": "(\\w+) text/,\"The original $1",
+  "id_upper": "DESCARTES",
+  "export_site": "{{name}}",
+  "id": "descartes",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "",
+  "intro_tagline_end": "modern philosophers",
+  "omni_word_test": "1",
+  "omni_hint": " or an idea — or search every passage",
+  "welcome_sub": "library of Modern Philosophy",
+  "welcome_rows": "&#8644;</span><span class=\"ob-tx\"><b>Versions.</b> Where a work has a second translation or its original text, a switch at the top of the page changes between them.</span></div><div class=\"ob-row\"><span class=\"ob-ic\">1.1",
+  "welcome_locus_word": "reference",
+  "welcome_tip": "><span class=\"ob-ic\">&#9998;</span><span class=\"ob-tx\"><b>Saved.</b> Highlight a passage to keep it, add a note or bookmark your place; everything you save is gathered on one page",
+  "parallel_hint": "the original text or another translation",
+  "share_stub_url": "",
+  "search_examples": "Descartes, Kant, Nietzsche, a word, a phrase…",
+  "intro_chime": "[[261.63,0],[329.63,.18],[392,.36],[523.25,.54],[392,.9],[329.63,1.08],[440,1.26],[523.25,1.44],[659.25,1.62]].forEach(function(n){l(n[0],{type:\"triangle\",dur:.14,gain:.15,attack:.002,release:.9,cutoff:4200,rev:.55,when:n[1]}),l(n[0]*2,{type:\"square\",dur:.05,gain:.02,attack:.002,release:.4,cutoff:5000,rev:.55,when:n[1]})}),[130.81,196,261.63].forEach(function(f){l(f,{type:\"sawtooth\",dur:2.2,gain:.045,attack:.7,release:2,cutoff:900,rev:.75,when:1.7})}),w(783.99,{gain:.1,dur:2,rev:.85,when:1.9})"
+ },
+ "color": "#5a6470",
+ "icon_color": "#5a6470",
+ "glyph": "∞",
+ "initials": "DS",
+ "mark_width": 1.1
+}
