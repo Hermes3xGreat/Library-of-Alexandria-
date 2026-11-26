@@ -1,0 +1,1 @@
+window.__hvCxRegister("@index", {"v":1,"dialogues":{"alc1":539,"alc2":2,"apol":3,"chrm":9,"crat":234,"crit":3,"epin":4,"euth":6,"euthy":10,"gorg":6,"hipparch":3,"hippmaj":3,"hippmin":4,"ion":5,"laws":20,"lysis":6,"menex":3,"meno":11,"minos":4,"parm":78,"phae":6,"phdr":42,"phil":8,"rep":117,"rivals":1,"soph":13,"stm":7,"symp":214,"theages":3,"tht":13,"tim":1773},"about":true});
