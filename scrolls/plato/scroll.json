@@ -1,0 +1,58 @@
+{
+ "id": "plato",
+ "name": "Plato Scroll",
+ "version": "5.25f",
+ "books": "books",
+ "data": "data",
+ "web_extras": "web",
+ "android": {
+  "package": "com.platoscroll.app",
+  "label": "Plato Scroll",
+  "versionCode": 300,
+  "versionName": "5.25",
+  "keystore": "",
+  "alias": "hermes"
+ },
+ "text": {
+  "build_comment": "build 5.25f-2026-11-18 · Without audiobooks",
+  "webgl_probe": "var t=null;try{t=document.createElement(\"canvas\").getContext(\"webgl2\")}catch(r){}if(!t)return;",
+  "subtitle": "An Ancient Library",
+  "description": "Hellenic philosophy and wisdom: Plato, Aristotle, the Neoplatonists, and more, in English with the Greek originals.\"><meta property=\"og:image\" content=\"https://plato-scroll.com/img/og-card-2.jpg\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta property=\"og:url\" content=\"https://plato-scroll.com/",
+  "description_2": "Hellenic philosophy and wisdom: Plato, Aristotle, the Neoplatonists, and more, in English with the Greek originals.\"><meta name=\"twitter:image\" content=\"https://plato-scroll.com/img/og-card-2.jpg",
+  "description_3": "Hellenic philosophy and wisdom: Plato, Aristotle, the Neoplatonists, Julian and more, in English with the Greek originals.\"><meta name=\"theme-color\" content=\"#1a1222",
+  "favicon": {
+   "file": "text/favicon.txt"
+  },
+  "banner_image": {
+   "file": "text/banner_image.txt"
+  },
+  "footer_links": "hv-flink\" href=\"https://platonicpath.org\" target=\"_blank\" rel=\"noopener noreferrer\">Platonic Path</a><a class=\"",
+  "footer_links_end": "</a><a class=\"hv-flink\" href=\"https://plato-scroll.com/privacy.html\" target=\"_blank\" rel=\"noopener noreferrer\">Privacy",
+  "covers": "",
+  "slot_label_langs": "Latin|Greek",
+  "slot_label_rewrite": "Latin text/,\"The original Latin\").replace(/^Greek text/,\"The original Greek",
+  "id_upper": "PLATO",
+  "export_site": "plato-scroll.com",
+  "id": "plato",
+  "native_names": "ΖΩΡΟΑΣΤΡΗΣ",
+  "site_url": "https://plato-scroll.com/",
+  "intro_tagline_end": "ancients",
+  "omni_word_test": "/\\s/.test(e.trim())",
+  "omni_hint": ", an idea, or a Greek word — or search deeper",
+  "welcome_sub": "complete classical library",
+  "welcome_rows": {
+   "file": "text/welcome_rows.txt"
+  },
+  "welcome_locus_word": "locus",
+  "welcome_tip": " id=\"ob-landing-tip\"><span class=\"ob-ic\">⌂</span><span class=\"ob-tx\"><b>Finding your way.</b> The tabs under the top bar open the Continue page, everything you have saved, the full catalogue, the encyclopedia and the downloads &mdash; the apps and every work as PDF and EPUB",
+  "parallel_hint": "another translation or the Greek",
+  "share_stub_url": "s?\"https://plato-scroll.com/s/\"+e(s)+\"/\":",
+  "search_examples": "Plato, Plotinus",
+  "intro_chime": "w(587.33,{gain:.32,dur:2.8,rev:.72,when:.04}),[146.83,220,293.66,440].forEach(function(t,e){l(t,{type:e<2?\"triangle\":\"sine\",dur:3.2,gain:.16-e*.02,attack:1.3,release:2.6,cutoff:2900,detune:-4,rev:.7}),l(t,{type:e<2?\"triangle\":\"sine\",dur:3.2,gain:.14-e*.02,attack:1.5,release:2.6,cutoff:2900,detune:4,rev:.7})}),w(880,{gain:.18,dur:2.4,rev:.8,when:1.3})"
+ },
+ "color": "#23539d",
+ "icon_color": "#23539d",
+ "glyph": "Φ",
+ "initials": "ΠΣ",
+ "reference": true
+}
